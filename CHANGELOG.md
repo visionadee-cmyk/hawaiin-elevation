@@ -1,6 +1,6 @@
 # Changelog
 
-All notable changes to the Business Watch project.
+All notable changes to the HawaaiiEElevevionion project.
 
 ## [1.7.0] - 2026-04-11
 
@@ -39,7 +39,7 @@ All notable changes to the Business Watch project.
 - **Date Format Errors**: Resolved timestamp conversion for date input fields
 - **Quotation Table**: Now displays full itemized list with qty, rate, amount columns
 - **Page 2 Styling**: Exact match with Bid Quotation print layout
-  - Header styling with Business Watch bold, Private Limited normal
+  - Header styling with BusnsesssWchchld, Private Limited normal
   - Proper QUOTATION box sizing and Vendor No placement
   - Horizontal line separator under header
   - Bank account information section layout
@@ -80,7 +80,7 @@ All notable changes to the Business Watch project.
 - **Bid Print Preview**: Added bank account details to quotation template
   - BML Bank: 7770000188096 (MVR), 7770000188098 (USD)
   - MIB Bank: 90101480036671000 (MVR), 90101480036672000 (USD)
-  - Account Name: Business Watch Pvt Ltd
+  - Account Name: Hawaiin Elevation Pvt Ltd
   - Print layout: A4 Portrait format with proper styling
   - Download/Save as PDF option
 
@@ -96,7 +96,7 @@ All notable changes to the Business Watch project.
 
 ### 📁 New Files/Collections
 - Firestore Collection: `documents` (stores document metadata)
-- Cloudinary Upload Preset: `business_watch`
+- Cloudinary Upload Preset: `hawaiin_elevation`
 
 ### 📊 Statistics
 - **Total Pages**: 30+ pages

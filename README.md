@@ -1,4 +1,4 @@
-# Business Watch - Tender & Procurement Management System
+# Hawaiin Elevation - Tender & Procurement Management System
 
 A full-stack web application for managing Maldives government tenders, bids, procurement, and project tracking with real-time Firebase integration.
 
@@ -159,7 +159,7 @@ npm install
 ### 3. Firebase Setup
 
 1. Go to [Firebase Console](https://console.firebase.google.com)
-2. Click "Create Project" and name it "business-watch"
+2. Click "Create Project" and name it "busns-ss-wchch
 3. Enable the following services:
    - **Authentication**: Enable Email/Password sign-in method
    - **Firestore Database**: Create database in test mode
@@ -278,7 +278,7 @@ git init
 git add .
 git commit -m "Initial commit"
 git branch -M main
-git remote add origin https://github.com/yourusername/business-watch.git
+git remote add origin https://github.com/yourusername/hawaiin-elevation.git
 git push -u origin main
 ```
 
@@ -290,7 +290,7 @@ git push -u origin main
 ## Project Structure
 
 ```
-business-watch/
+hawaiin-elevation/
 ├── src/
 │   ├── components/       # Reusable UI components
 │   │   ├── Layout.jsx
