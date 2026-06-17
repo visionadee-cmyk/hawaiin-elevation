@@ -66,7 +66,7 @@ const Login = () => {
                 e.target.style.display = 'none';
               }}
             />
-            <h2 className="text-2xl font-bold text-white mb-2">Business Watch</h2>
+            <h2 className="text-2xl font-bold text-white mb-2">Hawaiin Elevation</h2>
             <p className="text-primary-100">Tender & Procurement Management System</p>
             <p className="text-primary-200 text-sm mt-4">Developed by RettsWebDev since 2016</p>
           </div>
@@ -77,10 +77,10 @@ const Login = () => {
           <div className="text-center mb-8">
             <img 
               src="/logo/logo.jpeg" 
-              alt="Business Watch" 
+              alt="Hawaiin Elevation" 
               className="w-16 h-16 mx-auto mb-4 object-contain"
             />
-            <h1 className="text-2xl font-bold text-gray-900">Business Watch</h1>
+            <h1 className="text-2xl font-bold text-gray-900">Hawaiin Elevation</h1>
             <p className="text-gray-500 mt-2">Tender & Procurement Management</p>
           </div>
 
@@ -234,7 +234,7 @@ const Login = () => {
         {!isRegistering && (
           <div className="mt-6 text-center text-sm text-gray-500">
             <p>Need help? Contact your administrator.</p>
-            <p className="mt-2 text-xs">Powered by Business Watch PVT LTD</p>
+            <p className="mt-2 text-xs">Powered by Hawaiin Elevation PVT LTD</p>
           </div>
         )}
         </div>
