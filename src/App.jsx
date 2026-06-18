@@ -37,6 +37,7 @@ import AdvancedSearch from './pages/AdvancedSearch';
 import Chat from './pages/Chat';
 import StaffExpense from './pages/StaffExpense';
 import BidCompiler from './pages/BidCompiler';
+import BoardMembers from './pages/BoardMembers';
 
 import { useAuth } from './contexts/AuthContext';
 
@@ -317,6 +318,14 @@ function App() {
         <ProtectedRoute>
           <Layout>
             <NotificationCenter />
+          </Layout>
+        </ProtectedRoute>
+      } />
+
+      <Route path="/board-members" element={
+        <ProtectedRoute>
+          <Layout>
+            <BoardMembers />
           </Layout>
         </ProtectedRoute>
       } />

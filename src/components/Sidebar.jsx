@@ -105,6 +105,7 @@ const Sidebar = () => {
     { path: '/notifications', icon: Bell, label: 'Notifications' },
     { path: '/chat', icon: MessageCircle, label: 'Team Chat' },
     { path: '/search', icon: Search, label: 'Advanced Search' },
+    { path: '/board-members', icon: Users, label: 'Board Members' },
   ];
 
   // Only show Users and Audit Log links to admins
