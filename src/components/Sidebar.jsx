@@ -77,6 +77,7 @@ const Sidebar = () => {
 
   const navItems = [
     { path: '/', icon: LayoutDashboard, label: 'Dashboard' },
+    { path: '/board-members', icon: Users, label: 'Board Members' },
     { path: '/tenders', icon: FileText, label: 'Tenders' },
     { path: '/bids', icon: DollarSign, label: 'Bids' },
     { path: '/bids/won', icon: CheckCircle, label: 'Won Bids' },

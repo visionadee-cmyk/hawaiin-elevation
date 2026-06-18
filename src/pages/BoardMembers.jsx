@@ -2,10 +2,10 @@ import React from 'react'
 
 export default function BoardMembers() {
   return (
-    <main className="max-w-4xl mx-auto p-6">
-      <h1 className="text-3xl font-semibold mb-4">Board Members</h1>
+    <main className="max-w-7xl mx-auto p-6 lg:p-8">
+      <h1 className="text-3xl font-semibold mb-6">Board Members</h1>
 
-      <div className="overflow-x-auto mb-8">
+      <div className="overflow-x-auto mb-8 bg-white border border-gray-100 rounded-lg shadow-sm">
         <table className="min-w-full divide-y divide-gray-200">
           <thead className="bg-gray-50">
             <tr>
