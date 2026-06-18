@@ -2,8 +2,8 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/png" href="/logo/logo.png" />
-    <link rel="apple-touch-icon" href="/logo/logo.png" />
+    <link rel="icon" type="image/jpeg" href="/logo/logo.jpeg" />
+    <link rel="apple-touch-icon" href="/logo/logo.jpeg" />
     <link rel="manifest" href="/manifest.json" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="theme-color" content="#0f766e" />
@@ -55,28 +55,15 @@
   </head>
   <body>
     <div id="root"></div>
-    <script>
-      // Force unregister all existing ServiceWorkers to clear stuck cache
-      if ('serviceWorker' in navigator) {
-        navigator.serviceWorker.getRegistrations().then(function(registrations) {
-          for(let registration of registrations) {
-            registration.unregister();
-            console.log('ServiceWorker unregistered:', registration.scope);
-          }
-        });
-      }
-    </script>
     <script type="module" src="/src/main.jsx"></script>
     <script>
-      // Service Worker temporarily disabled to clear stuck cache
-      // Re-enable after confirming deployment works
-      /*
+      // Register service worker for PWA installability
       if ('serviceWorker' in navigator) {
         window.addEventListener('load', () => {
           navigator.serviceWorker.register('/sw.js')
             .then((registration) => {
               console.log('SW registered: ', registration);
-              // Force update check
+              // Check for updates
               registration.update();
             })
             .catch((registrationError) => {
@@ -84,7 +71,6 @@
             });
         });
       }
-      */
     </script>
   </body>
 </html>
