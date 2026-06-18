@@ -30,7 +30,7 @@ export default async function handler(req, res) {
     try {
       subscribers = JSON.parse(readFileSync(subscribersPath, 'utf8'));
     } catch {
-      subscribers = [{ email: process.env.ADMIN_EMAIL || 'admin@businesswatch.mv' }];
+      subscribers = [{ email: process.env.ADMIN_EMAIL || 'admin@hawaiin-elevation.mv' }];
     }
 
     // Add subscribers to notification service

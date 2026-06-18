@@ -106,7 +106,7 @@ class NotificationService {
   async sendEmail(to, subject, html) {
     try {
       await this.transporter.sendMail({
-        from: process.env.FROM_EMAIL || 'alerts@businesswatch.mv',
+        from: process.env.FROM_EMAIL || 'alerts@hawaiin-elevation.mv',
         to,
         subject,
         html,
@@ -175,7 +175,7 @@ class NotificationService {
           <p><strong>Created:</strong> ${new Date().toLocaleString()}</p>
         </div>
         <p>
-          <a href="https://businesswatch.mv/bids" style="background: #3b82f6; color: white; padding: 12px 24px; text-decoration: none; border-radius: 6px; display: inline-block;">
+          <a href="https://hawaiin-elevation.mv/bids" style="background: #3b82f6; color: white; padding: 12px 24px; text-decoration: none; border-radius: 6px; display: inline-block;">
             View All Bids
           </a>
         </p>

@@ -86,7 +86,7 @@ export const BidQuotationPage = ({ bid, showTax = true, gstRate = 8, selectedSig
       <div className="flex justify-between items-start border-b-2 border-gray-800 pb-2 mb-3">
         <div>
           <div className="flex items-center gap-2 mb-1">
-            <span className="text-2xl font-bold text-gray-900">Business Watch</span>
+            <span className="text-2xl font-bold text-gray-900">Hawaiin Elevation</span>
             <span className="text-sm text-gray-600">Private Limited</span>
           </div>
           <div className="text-xs text-gray-600 space-y-0.5">
@@ -172,14 +172,14 @@ export const BidQuotationPage = ({ bid, showTax = true, gstRate = 8, selectedSig
 
       <div className="text-xs text-gray-700 mb-2 border-t border-gray-300 pt-2">
         <p className="font-semibold mb-1">Bank Account Information:</p>
-        <div className="space-y-0.5 mb-1">
+          <div className="space-y-0.5 mb-1">
           <p className="font-medium text-gray-800">Bank of Maldives (BML)</p>
-          <p>Account Name: Business Watch Pvt Ltd</p>
+          <p>Account Name: Hawaiin Elevation Pvt Ltd</p>
           <p>MVR: 7770000188096 | USD: 7770000188098</p>
         </div>
         <div className="space-y-0.5">
           <p className="font-medium text-gray-800">Maldives Islamic Bank (MIB)</p>
-          <p>Account Name: Business Watch Pvt Ltd</p>
+          <p>Account Name: Hawaiin Elevation Pvt Ltd</p>
           <p>MVR: 90101480036671000 | USD: 90101480036672000</p>
         </div>
       </div>
@@ -378,7 +378,7 @@ const BidQuotation = ({ bid, onClose }) => {
           <div className="flex justify-between items-start border-b-2 border-gray-800 pb-4 mb-6">
             <div>
               <div className="flex items-center gap-2 mb-1">
-                <span className="text-2xl font-bold text-gray-900">Business Watch</span>
+                <span className="text-2xl font-bold text-gray-900">Hawaiin Elevation</span>
                 <span className="text-sm text-gray-600">Private Limited</span>
               </div>
               <div className="text-xs text-gray-600 space-y-0.5">
@@ -466,12 +466,12 @@ const BidQuotation = ({ bid, onClose }) => {
           <p className="font-semibold">Bank Account Information:</p>
           <div className="space-y-1">
             <p className="font-medium text-gray-800">Bank of Maldives (BML)</p>
-            <p>Account Name: Business Watch Pvt Ltd</p>
+            <p>Account Name: Hawaiin Elevation Pvt Ltd</p>
             <p>MVR: 7770000188096 | USD: 7770000188098</p>
           </div>
           <div className="space-y-1 mt-1">
             <p className="font-medium text-gray-800">Maldives Islamic Bank (MIB)</p>
-            <p>Account Name: Business Watch Pvt Ltd</p>
+            <p>Account Name: Hawaiin Elevation Pvt Ltd</p>
             <p>MVR: 90101480036671000 | USD: 90101480036672000</p>
           </div>
         </div>
@@ -505,7 +505,7 @@ const BidQuotation = ({ bid, onClose }) => {
               </div>
               <p className="font-semibold text-sm">{signatories[selectedSignatory].name}</p>
               <p className="text-xs text-gray-600">{signatories[selectedSignatory].position}</p>
-              <p className="text-xs text-gray-500">Business Watch Pvt Ltd, Gulfamge, Lh.Hinnavaru</p>
+              <p className="text-xs text-gray-500">Hawaiin Elevation Pvt Ltd, Gulfamge, Lh.Hinnavaru</p>
             </div>
           </div>
 
@@ -526,7 +526,7 @@ const BidQuotation = ({ bid, onClose }) => {
         <div className="flex justify-between items-start border-b-2 border-gray-800 pb-2 mb-3">
           <div>
             <div className="flex items-center gap-2 mb-1">
-              <span className="text-2xl font-bold text-gray-900">Business Watch</span>
+               <span className="text-2xl font-bold text-gray-900">Hawaiin Elevation</span>
               <span className="text-sm text-gray-600">Private Limited</span>
             </div>
             <div className="text-xs text-gray-600 space-y-0.5">
@@ -613,16 +613,16 @@ const BidQuotation = ({ bid, onClose }) => {
         </table>
 
         {/* Bank Information */}
-        <div className="text-xs text-gray-700 mb-2 border-t border-gray-300 pt-2">
+          <div className="text-xs text-gray-700 mb-2 border-t border-gray-300 pt-2">
           <p className="font-semibold mb-1">Bank Account Information:</p>
           <div className="space-y-0.5 mb-1">
             <p className="font-medium text-gray-800">Bank of Maldives (BML)</p>
-            <p>Account Name: Business Watch Pvt Ltd</p>
+            <p>Account Name: Hawaiin Elevation Pvt Ltd</p>
             <p>MVR: 7770000188096 | USD: 7770000188098</p>
           </div>
           <div className="space-y-0.5">
             <p className="font-medium text-gray-800">Maldives Islamic Bank (MIB)</p>
-            <p>Account Name: Business Watch Pvt Ltd</p>
+            <p>Account Name: Hawaiin Elevation Pvt Ltd</p>
             <p>MVR: 90101480036671000 | USD: 90101480036672000</p>
           </div>
         </div>

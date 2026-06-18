@@ -1,7 +1,7 @@
 # Firebase Migration Guide
 
 ## Overview
-Migrating from OLD project `bussiness-watch` (suspended) to NEW project `business-watch-52e10`.
+Migrating from OLD project `bussiness-watch` (suspended) to NEW project `hawaiin-elevation-52e10`.
 
 ## Files Created
 
@@ -18,7 +18,7 @@ Migrating from OLD project `bussiness-watch` (suspended) to NEW project `busines
 
 ### Step 1: Export Old Data
 ```bash
-cd business-watch
+cd hawaiin-elevation
 node scripts/export-old-firebase-data.cjs
 ```
 This creates: `data/firebase-backup-export.json`
@@ -28,7 +28,7 @@ Check that `data/firebase-backup-export.json` exists and contains your data.
 
 ### Step 3: Setup New Firebase Project
 1. Go to https://console.firebase.google.com
-2. Select project: **business-watch-52e10**
+2. Select project: **hawaiin-elevation-52e10**
 3. Enable **Authentication** → Email/Password
 4. Enable **Firestore Database** → Start in test mode
 5. Enable **Storage** (optional, for documents)

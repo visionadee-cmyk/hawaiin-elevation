@@ -80,7 +80,7 @@ Use this if you don't want GitHub Actions.
 2. Fill the form:
    
    **General Settings:**
-   - Title: `Business Watch - Deadline Check`
+  - Title: `Hawaiin Elevation - Deadline Check`
    - Address: `https://your-site.vercel.app/api/check-deadlines`
      - (Replace with your actual Vercel URL)
    
@@ -116,7 +116,7 @@ Use this if you don't want GitHub Actions.
 2. Fill the form:
    
    **General Settings:**
-   - Title: `Business Watch - Gazette Scrape`
+  - Title: `Hawaiin Elevation - Gazette Scrape`
    - Address: `https://your-site.vercel.app/api/scrape-gazette`
    
    **Schedule:**

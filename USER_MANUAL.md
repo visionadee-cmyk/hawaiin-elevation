@@ -1,6 +1,6 @@
-# User Manual - Business Watch
+# User Manual - Hawaiin Elevation
 
-Complete guide for using the Business Watch tender management system.
+Complete guide for using the Hawaiin Elevation tender management system.
 
 ## Table of Contents
 
@@ -845,7 +845,7 @@ Chat uses **Pusher** for real-time messaging (free forever, 200k messages/day, n
 **Setup Steps:**
 
 1. **Create free account**: Go to [pusher.com](https://pusher.com) and sign up
-2. **Create app**: Click "Create app" → Name it "Business Watch Chat"
+2. **Create app**: Click "Create app" → Name it "Hawaiin Elevation Chat"
 3. **Get credentials**: 
    - Go to "App Keys" tab
    - Copy your `app_id`, `key`, and `secret`
@@ -936,7 +936,7 @@ firebase deploy --only firestore:rules --project bussiness-watch
 
 ## Mobile Usage
 
-Business Watch is fully responsive for mobile devices.
+Hawaiin Elevation is fully responsive for mobile devices.
 
 ### Mobile Navigation
 

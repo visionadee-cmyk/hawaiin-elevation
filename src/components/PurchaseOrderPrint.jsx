@@ -206,7 +206,7 @@ const PurchaseOrderPrint = ({ purchaseOrder, onClose }) => {
                 />
                 <div>
                   <div className="flex items-center gap-2 mb-1">
-                    <span className="text-2xl font-bold text-gray-900">Business Watch</span>
+                    <span className="text-2xl font-bold text-gray-900">Hawaiin Elevation</span>
                     <span className="text-sm text-gray-600">Private Limited</span>
                   </div>
                   <div className="text-xs text-gray-600 space-y-0.5">
@@ -330,7 +330,7 @@ const PurchaseOrderPrint = ({ purchaseOrder, onClose }) => {
               <div className="mt-4 pt-4 border-t border-gray-300">
                 <p className="font-semibold">Bank Account Information:</p>
                 <p>Bank: MIB (Maldives Islamic Bank)</p>
-                <p>Account Name: Business Watch Pvt Ltd</p>
+                <p>Account Name: Hawaiin Elevation Pvt Ltd</p>
                 <p>MVR Account: 90101480036671000</p>
                 <p>USD Account: 90101480036672000</p>
               </div>
@@ -358,7 +358,7 @@ const PurchaseOrderPrint = ({ purchaseOrder, onClose }) => {
                 </div>
                 <p className="font-semibold text-sm">{signatories[selectedSignatory].name}</p>
                 <p className="text-xs text-gray-600">{signatories[selectedSignatory].position}</p>
-                <p className="text-xs text-gray-500">Business Watch Pvt Ltd, Gulfamge, Lh.Hinnavaru</p>
+                <p className="text-xs text-gray-500">Hawaiin Elevation Pvt Ltd, Gulfamge, Lh.Hinnavaru</p>
               </div>
             </div>
           </div>

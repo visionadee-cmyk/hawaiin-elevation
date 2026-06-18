@@ -205,7 +205,7 @@ const OpenBidsReport = ({ bids, onClose }) => {
             <div className="flex justify-between items-start">
               <div>
                 <div className="flex items-center gap-2 mb-1">
-                  <span className="text-3xl font-bold text-gray-900">Business Watch</span>
+                  <span className="text-3xl font-bold text-gray-900">Hawaiin Elevation</span>
                   <span className="text-lg text-gray-600">Private Limited</span>
                 </div>
                 <div className="text-sm text-gray-600 space-y-0.5">
@@ -357,7 +357,7 @@ const OpenBidsReport = ({ bids, onClose }) => {
 
           {/* Footer */}
           <div className="p-6 border-t border-gray-200 text-center text-sm text-gray-500">
-            <p>Business Watch Pvt Ltd - Open Bids Report</p>
+            <p>Hawaiin Elevation Pvt Ltd - Open Bids Report</p>
             <p>Generated on {format(new Date(), 'dd MMMM yyyy')} at {format(new Date(), 'HH:mm')}</p>
           </div>
         </div>

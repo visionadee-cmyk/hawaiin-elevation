@@ -42,7 +42,7 @@ export const useChat = () => {
         forceTLS: true,
       });
 
-      const channel = pusherClient.subscribe('business-watch-chat');
+      const channel = pusherClient.subscribe('hawaiin-elevation-chat');
 
       channel.bind('message', (data) => {
         setMessages((prev) => {
@@ -56,7 +56,7 @@ export const useChat = () => {
       setLoading(false);
 
       return () => {
-        pusherClient.unsubscribe('business-watch-chat');
+        pusherClient.unsubscribe('hawaiin-elevation-chat');
         pusherClient.disconnect();
       };
     } catch (err) {
@@ -92,7 +92,7 @@ export const useChat = () => {
         setMessages((prev) => [...prev, message]);
 
         if (pusher) {
-          const channel = pusher.channel('business-watch-chat');
+          const channel = pusher.channel('hawaiin-elevation-chat');
           if (channel) {
             channel.trigger('client-message', message);
           }

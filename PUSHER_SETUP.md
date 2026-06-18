@@ -1,4 +1,4 @@
-# Pusher Setup Guide for Business Watch Chat
+# Pusher Setup Guide for Hawaiin Elevation Chat
 
 ## Step-by-Step Instructions
 
@@ -10,7 +10,7 @@ From your current screen (dashboard.pusher.com):
 
 ### Step 2: Create Your App
 Fill in the form:
-- **App name**: `Business Watch Chat`
+- **App name**: `Hawaiin Elevation Chat`
 - **Cluster**: Select `Asia Pacific (Mumbai) - ap2` (closest to Maldives)
 - Click **"Create app"**
 

@@ -120,7 +120,7 @@ export default function Reports() {
                 {reportType === 'financial' && 'Financial Analysis Report'}
                 {reportType === 'performance' && 'Performance Report'}
               </h2>
-              <p className="text-gray-500 mt-1">Business Watch Tender Management System</p>
+              <p className="text-gray-500 mt-1">Hawaiin Elevation Tender Management System</p>
             </div>
             <div className="text-right text-sm text-gray-500">
               <p>Generated: {new Date().toLocaleDateString()}</p>
@@ -308,7 +308,7 @@ export default function Reports() {
 
         {/* Footer */}
         <div className="border-t pt-6 text-center text-sm text-gray-500">
-          <p>Business Watch - Tender Management System</p>
+          <p>Hawaiin Elevation - Tender Management System</p>
           <p>Generated on {new Date().toLocaleString()}</p>
         </div>
       </div>

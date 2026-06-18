@@ -55,7 +55,7 @@ A full-stack web application for managing Maldives government tenders, bids, pro
 ### Bank Information in Bid Print Preview
 - **BML Bank Accounts**: 7770000188096 (MVR), 7770000188098 (USD)
 - **MIB Bank Accounts**: 90101480036671000 (MVR), 90101480036672000 (USD)
-- **Account Name**: Business Watch Pvt Ltd
+- **Account Name**: Hawaiin Elevation Pvt Ltd
 - **Print Layout**: A4 Portrait format with proper bank details
 
 ### Bid Lot Configuration

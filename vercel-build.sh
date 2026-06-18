@@ -3,7 +3,7 @@
 # Vercel Build Script
 # This script runs during the Vercel build process
 
-echo "🚀 Starting Business Watch build process..."
+echo "🚀 Starting Hawaiin Elevation build process..."
 
 # Install dependencies
 echo "📦 Installing dependencies..."

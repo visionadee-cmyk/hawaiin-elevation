@@ -8,7 +8,7 @@ const defaultTemplates = [
     category: 'IT',
     description: 'Standard template for IT equipment tenders',
     sections: [
-      { title: 'Company Profile', content: 'Business Watch - IT Solutions Provider\nEstablished: 2015\nEmployees: 25\nCertifications: ISO 9001' },
+      { title: 'Company Profile', content: 'Hawaiin Elevation - IT Solutions Provider\nEstablished: 2015\nEmployees: 25\nCertifications: ISO 9001' },
       { title: 'Technical Specifications', content: 'All equipment meets international standards\nWarranty: 3 years minimum\nSupport: 24/7 available' },
       { title: 'Pricing', content: 'Itemized pricing with detailed breakdown\nValid for 30 days from submission' },
       { title: 'Delivery', content: 'Delivery within 30 days of PO\nInstallation and training included' },
@@ -23,7 +23,7 @@ const defaultTemplates = [
     category: 'Office',
     description: 'For general office supplies and stationery',
     sections: [
-      { title: 'Vendor Information', content: 'Business Watch - Office Solutions\nVAT Registered\nLocal supplier since 2015' },
+      { title: 'Vendor Information', content: 'Hawaiin Elevation - Office Solutions\nVAT Registered\nLocal supplier since 2015' },
       { title: 'Product Catalog', content: 'Complete range of office supplies\nStationery, furniture, equipment\nEco-friendly options available' },
       { title: 'Pricing Structure', content: 'Competitive wholesale pricing\nVolume discounts available\nFixed pricing for 6 months' },
       { title: 'Delivery Terms', content: 'Weekly delivery schedule\nFree delivery for orders >MVR 5000\nSame-day delivery available' }

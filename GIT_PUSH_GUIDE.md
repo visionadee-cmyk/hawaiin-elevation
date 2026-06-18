@@ -1,11 +1,11 @@
 # Git Push Guide
 
-Quick reference for pushing changes to the Business Watch repository.
+Quick reference for pushing changes to the Hawaiin Elevation repository.
 
 ## Quick Push (One Command)
 
 ```powershell
-git -C business-watch add .; git -C business-watch commit -m "fix: description"; git -C business-watch push origin main
+git -C hawaiin-elevation add .; git -C hawaiin-elevation commit -m "fix: description"; git -C hawaiin-elevation push origin main
 ```
 
 **Note:** Use `main` branch for all pushes. Vercel auto-deploys from `main`.
@@ -16,7 +16,7 @@ To avoid GitHub login prompts every time, use a Personal Access Token:
 
 ```powershell
 # Set remote with token (replace YOUR_TOKEN with actual token)
-git -C business-watch remote set-url origin https://YOUR_TOKEN@github.com/bussinesswatch/Business-Watch.git
+git -C hawaiin-elevation remote set-url origin https://YOUR_TOKEN@github.com/hawaiin-elevation/Hawaiin-Elevation.git
 ```
 
 **Get token:** https://github.com/settings/tokens → Generate new token (classic) → check `repo` scope
@@ -25,17 +25,17 @@ git -C business-watch remote set-url origin https://YOUR_TOKEN@github.com/bussin
 
 ### 1. Check Status
 ```powershell
-git -C business-watch status
+git -C hawaiin-elevation status
 ```
 
 ### 2. Add Changes
 ```powershell
-git -C business-watch add .
+git -C hawaiin-elevation add .
 ```
 
 ### 3. Commit
 ```powershell
-git -C business-watch commit -m "fix: description of change"
+git -C hawaiin-elevation commit -m "fix: description of change"
 ```
 
 **Commit prefixes:**
@@ -47,30 +47,30 @@ git -C business-watch commit -m "fix: description of change"
 
 ### 4. Push to Main
 ```powershell
-git -C business-watch push origin main
+git -C hawaiin-elevation push origin main
 ```
 
 ## Quick Commands Reference
 
 ```powershell
 # Check status + log + branch
-git -C business-watch status; git -C business-watch log --oneline -1; git -C business-watch branch --show-current
+git -C hawaiin-elevation status; git -C hawaiin-elevation log --oneline -1; git -C hawaiin-elevation branch --show-current
 
 # See unpushed commits
-git -C business-watch log --oneline origin/main..HEAD
+git -C hawaiin-elevation log --oneline origin/main..HEAD
 
 # View file changes
-git -C business-watch diff filename
+git -C hawaiin-elevation diff filename
 
 # Pull latest
-git -C business-watch pull origin main
+git -C hawaiin-elevation pull origin main
 ```
 
 ## Repository Info
 
-- **Remote:** `https://github.com/bussinesswatch/Business-Watch.git`
-- **Branch:** `main` (deploys to Vercel)
-- **Location:** `c:\Users\maushaz.MADIHAA\Desktop\Rettey\bussiness_watch\business-watch`
+-- **Remote:** `https://github.com/hawaiin-elevation/Hawaiin-Elevation.git`
+-- **Branch:** `main` (deploys to Vercel)
+-- **Location:** `c:\Users\maushaz.MADIHAA\Desktop\Rettey\hawaiin_elevation\hawaiin-elevation`
 
 ## Troubleshooting
 

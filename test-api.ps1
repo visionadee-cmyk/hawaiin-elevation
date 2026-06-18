@@ -1,5 +1,5 @@
 # Test API endpoints
-$baseUrl = "https://businesswatch.vercel.app"
+$baseUrl = "https://hawaiin-elevation.vercel.app"
 $cronSecret = "mizd_ouuc_nhij_cnoz"
 
 Write-Host "Testing API endpoints..." -ForegroundColor Cyan

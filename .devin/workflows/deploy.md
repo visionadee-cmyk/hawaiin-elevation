@@ -1,9 +1,9 @@
 ---
-description: How to deploy the Business Watch application to production
+description: How to deploy the Hawaiin Elevation application to production
 tags: [deployment, vercel, github]
 ---
 
-# Deploy Business Watch Application
+# Deploy Hawaiin Elevation Application
 
 ## Prerequisites
 - GitHub repository access
@@ -27,12 +27,12 @@ npm run build
 
 ### 3. Monitor Vercel Deployment
 1. Go to [Vercel Dashboard](https://vercel.com/dashboard)
-2. Select the Business Watch project
+2. Select the Hawaiin Elevation project
 3. Watch the deployment progress
 4. Check for any build errors
 
 ### 4. Verify Deployment
-1. Visit the production URL: `https://businesswatch.vercel.app`
+1. Visit the production URL: `https://hawaiin-elevation.vercel.app`
 2. Test the specific features you changed
 3. Check browser console for errors
 

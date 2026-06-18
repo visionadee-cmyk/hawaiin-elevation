@@ -142,11 +142,11 @@ const Sidebar = () => {
           <div className="flex items-center gap-3">
             <img 
               src="/logo/logo.jpeg" 
-              alt="Business Watch" 
+              alt="Hawaiin Elevation" 
               className="h-10 w-auto object-contain"
             />
             <div>
-              <h1 className="text-lg font-bold text-primary-700">Business Watch</h1>
+              <h1 className="text-lg font-bold text-primary-700">Hawaiin Elevation</h1>
               <p className="text-xs text-gray-500 hidden lg:block">Tender & Procurement</p>
             </div>
           </div>

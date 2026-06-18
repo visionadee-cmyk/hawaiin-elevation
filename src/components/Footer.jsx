@@ -14,11 +14,11 @@ const Footer = () => {
           <div className="flex items-center gap-4">
             <img 
               src="/logo/logo.jpeg" 
-              alt="Business Watch" 
+              alt="Hawaiin Elevation" 
               className="h-12 w-auto bg-white rounded-lg p-1"
             />
             <div>
-              <h3 className="font-bold text-lg">Business Watch</h3>
+              <h3 className="font-bold text-lg">Hawaiin Elevation</h3>
               <p className="text-slate-400 text-sm">Pvt Ltd</p>
             </div>
           </div>
@@ -41,15 +41,17 @@ const Footer = () => {
           <div className="flex flex-col items-end gap-2 text-sm text-slate-400">
             <div className="flex items-center gap-2">
               <Building2 className="w-4 h-4" />
-              <span>Business Watch Pvt Ltd</span>
+              <span>Hawaiin Elevation Pvt Ltd</span>
             </div>
             <div className="flex items-center gap-2">
               <Mail className="w-4 h-4" />
-              <span>businesswatchmv@gmail.com</span>
+              <span>hawainnelevation@gmail.com</span>
             </div>
             <div className="flex items-center gap-2">
               <Globe className="w-4 h-4" />
-              <span>www.businesswatch.mv</span>
+              <a href="https://www.facebook.com/profile.php?id=61590504496612" target="_blank" rel="noopener noreferrer" className="underline">
+                Hawaiin Elevation
+              </a>
             </div>
           </div>
         </div>
@@ -63,11 +65,11 @@ const Footer = () => {
             Made with <Heart className="w-4 h-4 text-red-500 fill-red-500" /> by RettsWebDev
           </p>
           <p>
-            © {currentYear} Business Watch Pvt Ltd. All rights reserved.
+            © {currentYear} Hawaiin Elevation Pvt Ltd. All rights reserved.
           </p>
           <p className="flex items-center gap-2">
             <span className="w-2 h-2 bg-emerald-500 rounded-full animate-pulse"></span>
-            Powered by Business Watch
+            Powered by Hawaiin Elevation
           </p>
         </div>
       </div>

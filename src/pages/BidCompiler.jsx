@@ -34,7 +34,7 @@ const defaultBidSections = {
     fields: [
       { name: 'tenderNo', label: 'Tender No', value: '', type: 'text' },
       { name: 'tenderTitle', label: 'Tender Title', value: '', type: 'text' },
-      { name: 'companyName', label: 'Company Name', value: 'Business Watch Pvt Ltd', type: 'text' },
+      { name: 'companyName', label: 'Company Name', value: 'Hawaiin Elevation Pvt Ltd', type: 'text' },
       { name: 'address', label: 'Address', value: 'Gulhifalhu, Lh.Himavaru', type: 'textarea' },
       { name: 'contactPerson', label: 'Contact Person', value: '', type: 'text' },
       { name: 'phone', label: 'Phone', value: '(960) 7786629', type: 'text' },
@@ -63,7 +63,7 @@ const defaultBidSections = {
     fields: [
       { name: 'authorizedSignature', label: 'Authorized Signature', value: '', type: 'text' },
       { name: 'signatoryName', label: 'Name and Title of Signatory', value: 'Aboobakuru Qasim', type: 'text' },
-      { name: 'bidderName', label: 'Name of Bidder', value: 'Business Watch Pvt. Ltd (C00062025)', type: 'text' },
+      { name: 'bidderName', label: 'Name of Bidder', value: 'Hawaiin Elevation Pvt. Ltd (C00062025)', type: 'text' },
       { name: 'bidderAddress', label: 'Address', value: 'Gulfaamge, Lh.hinnavaru, Maldives', type: 'textarea' },
       { name: 'phoneNumber', label: 'Phone Number', value: '7786629, 9829050', type: 'text' },
       { name: 'emailAddress', label: 'Fax Number/Email', value: 'businesswatchmv@gmail.com', type: 'text' },
@@ -705,7 +705,7 @@ export default function BidCompiler() {
         {/* Page 1 - Cover Page */}
         <div className="page-break-after">
           <div className="text-center mb-12">
-            <h1 className="text-3xl font-bold mb-4">Business Watch Private Limited</h1>
+            <h1 className="text-3xl font-bold mb-4">Hawaiin Elevation Private Limited</h1>
             <p className="text-sm text-gray-600 mb-2">Reg No: C0006/2025 | TIN: 1169863/GST/T/501</p>
             <p className="text-sm text-gray-600 mb-2">Address: Gulhifalhu, Lh.Himavaru, Maldives</p>
             <p className="text-sm text-gray-600 mb-2">Phone: (960) 7786629, (960) 9829050</p>
@@ -855,7 +855,7 @@ export default function BidCompiler() {
           </div>
         </div>
         <div className="text-center space-y-4 text-sm">
-          <p>I HEREBY certify that <strong>BUSINESS WATCH PRIVATE LIMITED</strong> is on this day registered</p>
+          <p>I HEREBY certify that <strong>HAWAIIN ELEVATION PRIVATE LIMITED</strong> is on this day registered</p>
           <p>under the Act no. 7/2023 and given under my hand and seal, at Male', Republic of Maldives</p>
           <p>this <strong>{sections.page4_companyReg?.fields?.find(f => f.name === 'regDate')?.value}</strong></p>
           <p className="mt-8 text-lg font-bold">No: {sections.page4_companyReg?.fields?.find(f => f.name === 'regNo')?.value}</p>
@@ -917,7 +917,7 @@ export default function BidCompiler() {
         <div className="text-center space-y-4 text-sm">
           <p>This is to certify that the undermentioned business activity is registered under the<br/>Goods and Services Tax Act (Law Number 10/2011).</p>
           <div className="border-2 border-gray-800 p-4 my-6 inline-block">
-            <p className="font-bold">Business Watch Private Limited</p>
+            <p className="font-bold">Hawaiin Elevation Private Limited</p>
             <p>TIN: {sections.page7_gst?.fields?.find(f => f.name === 'gstTin')?.value}</p>
             <p>{sections.page7_gst?.fields?.find(f => f.name === 'gstDate')?.value}</p>
             <p>Taxable Activity Number: {sections.page7_gst?.fields?.find(f => f.name === 'taxableActivity')?.value}</p>
@@ -972,7 +972,7 @@ export default function BidCompiler() {
           <tbody>
             <tr>
               <td className="py-2 font-semibold">Registered To:</td>
-              <td className="py-2">BUSINESS WATCH PVT LTD ({sections.page4_companyReg?.fields?.find(f => f.name === 'regNo')?.value})</td>
+              <td className="py-2">HAWAIIN ELEVATION PVT LTD ({sections.page4_companyReg?.fields?.find(f => f.name === 'regNo')?.value})</td>
             </tr>
             <tr>
               <td className="py-2 font-semibold">Registered Address:</td>
