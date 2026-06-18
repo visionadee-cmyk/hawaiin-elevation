@@ -1,14 +1,69 @@
 import React from 'react'
 
 const members = [
-  { name: 'Adam Gasim', role: 'Director of Administration' },
-  { name: 'Aboobakuru Gasim', role: 'Managing Director' },
-  { name: 'Abdul Rahman Gasim', role: 'Director of Technology' },
-  { name: 'Faiz Gasim', role: 'Director of Commercial & Tendering' },
-  { name: 'Ibrahim Gasim', role: 'Director of Projects & Maintenance' },
+  {
+    name: 'Adam Gasim',
+    role: 'Director of Administration',
+    img: '/profile/Adam.png',
+    responsibilities: [
+      'Office administration',
+      'Staff management',
+      'Documentation',
+      'Licensing and compliance'
+    ]
+  },
+  {
+    name: 'Aboobakuru Gasim',
+    role: 'Managing Director',
+    img: '/profile/Aboobakuru.png',
+    responsibilities: [
+      'Overall company leadership',
+      'Approving tenders and contracts',
+      'Client relationships',
+      'Strategic decisions'
+    ]
+  },
+  {
+    name: 'Abdul Rahman Gasim',
+    role: 'Director of Technology',
+    img: '/profile/Abdul Rahman.png',
+    responsibilities: [
+      'Software development',
+      'Data entry systems',
+      'Website and mobile apps',
+      'IT infrastructure'
+    ]
+  },
+  {
+    name: 'Faiz Gasim',
+    role: 'Director of Commercial & Tendering',
+    img: '/profile/Faiz.png',
+    responsibilities: [
+      'Price comparisons',
+      'BOQ preparation',
+      'Supplier quotations',
+      'Tender submissions'
+    ]
+  },
+  {
+    name: 'Ibrahim Gasim',
+    role: 'Director of Projects & Maintenance',
+    img: '/profile/Ibrahim.png',
+    responsibilities: [
+      'Site inspections',
+      'Project supervision',
+      'Maintenance operations',
+      'Quality and safety checks'
+    ]
+  }
 ];
 
-function Avatar({ name }) {
+function Avatar({ name, img }) {
+  if (img) {
+    return (
+      <img src={img} alt={name} className="h-24 w-24 rounded-full object-cover" />
+    );
+  }
   const initials = name.split(' ').map(n => n[0]).slice(0,2).join('');
   return (
     <div className="h-24 w-24 rounded-full bg-gradient-to-br from-primary-500 to-primary-300 flex items-center justify-center text-white text-lg font-semibold">
@@ -75,9 +130,15 @@ export default function BoardMembers() {
       <section className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6 mb-12">
         {members.map((m) => (
           <div key={m.name} className="flex flex-col items-center text-center bg-white p-4 rounded-lg shadow-sm">
-            <Avatar name={m.name} />
+            <Avatar name={m.name} img={m.img} />
             <h3 className="mt-3 font-semibold">{m.name}</h3>
-            <p className="text-sm text-gray-500">{m.role}</p>
+            <p className="text-sm text-gray-500 mb-3">{m.role}</p>
+            <div className="text-left w-full mt-2">
+              <h4 className="text-sm font-medium mb-2">Responsibilities</h4>
+              <ul className="list-disc list-inside text-sm text-gray-700 space-y-1">
+                {m.responsibilities.map((it) => <li key={it}>{it}</li>)}
+              </ul>
+            </div>
           </div>
         ))}
       </section>
