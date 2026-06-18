@@ -18,24 +18,59 @@ function Avatar({ name }) {
 }
 
 export default function BoardMembers() {
+  const responsibilities = [
+    {
+      title: 'Managing Director',
+      items: [
+        'Overall company leadership',
+        'Approving tenders and contracts',
+        'Client relationships',
+        'Strategic decisions'
+      ]
+    },
+    {
+      title: 'Director – Administration & Human Resources',
+      items: [
+        'Office administration',
+        'Staff management',
+        'Documentation',
+        'Licensing and compliance'
+      ]
+    },
+    {
+      title: 'Director – Software Development & Digital Solutions',
+      items: [
+        'Software development',
+        'Data entry systems',
+        'Website and mobile apps',
+        'IT infrastructure'
+      ]
+    },
+    {
+      title: 'Director – Estimation, Costing & Tendering',
+      items: [
+        'Price comparisons',
+        'BOQ preparation',
+        'Supplier quotations',
+        'Tender submissions'
+      ]
+    },
+    {
+      title: 'Director – Projects, Maintenance & Quality Control',
+      items: [
+        'Site inspections',
+        'Project supervision',
+        'Maintenance operations',
+        'Quality and safety checks'
+      ]
+    }
+  ];
+
   return (
     <main className="max-w-7xl mx-auto p-6 lg:p-8">
-      <h1 className="text-3xl font-semibold mb-2">Management</h1>
-      <p className="text-sm text-gray-500 mb-6">Executive Leadership Team</p>
+      <h1 className="text-3xl font-semibold mb-6">Management</h1>
 
-      <section className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 mb-10">
-        {/* Placeholder executive tiles - reuse first two members as exec examples */}
-        {members.slice(0,4).map((m) => (
-          <div key={m.name} className="flex flex-col items-center text-center bg-white p-4 rounded-lg shadow-sm">
-            <Avatar name={m.name} />
-            <h3 className="mt-3 font-semibold">{m.name}</h3>
-            <p className="text-sm text-gray-500">{m.role}</p>
-          </div>
-        ))}
-      </section>
-
-      <h2 className="text-2xl font-semibold mb-3">Board of Directors</h2>
-      <p className="text-sm text-gray-500 mb-6">Leadership and governance</p>
+      <h2 className="text-2xl font-semibold mb-4">Board of Directors</h2>
 
       <section className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6 mb-12">
         {members.map((m) => (
@@ -48,58 +83,24 @@ export default function BoardMembers() {
       </section>
 
       <section className="mb-6">
-        <h2 className="text-2xl font-semibold mb-3">Responsibilities</h2>
+        <h2 className="text-2xl font-semibold mb-6">Responsibilities</h2>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <div>
-            <h3 className="text-lg font-medium mt-2">Managing Director</h3>
-            <ul className="list-disc list-inside mt-2 space-y-1 text-sm text-gray-700">
-              <li>Overall company leadership</li>
-              <li>Approving tenders and contracts</li>
-              <li>Client relationships</li>
-              <li>Strategic decisions</li>
-            </ul>
-          </div>
-
-          <div>
-            <h3 className="text-lg font-medium mt-2">Director – Administration & Human Resources</h3>
-            <ul className="list-disc list-inside mt-2 space-y-1 text-sm text-gray-700">
-              <li>Office administration</li>
-              <li>Staff management</li>
-              <li>Documentation</li>
-              <li>Licensing and compliance</li>
-            </ul>
-          </div>
-
-          <div>
-            <h3 className="text-lg font-medium mt-2">Director – Software Development & Digital Solutions</h3>
-            <ul className="list-disc list-inside mt-2 space-y-1 text-sm text-gray-700">
-              <li>Software development</li>
-              <li>Data entry systems</li>
-              <li>Website and mobile apps</li>
-              <li>IT infrastructure</li>
-            </ul>
-          </div>
-
-          <div>
-            <h3 className="text-lg font-medium mt-2">Director – Estimation, Costing & Tendering</h3>
-            <ul className="list-disc list-inside mt-2 space-y-1 text-sm text-gray-700">
-              <li>Price comparisons</li>
-              <li>BOQ preparation</li>
-              <li>Supplier quotations</li>
-              <li>Tender submissions</li>
-            </ul>
-          </div>
-
-          <div>
-            <h3 className="text-lg font-medium mt-2">Director – Projects, Maintenance & Quality Control</h3>
-            <ul className="list-disc list-inside mt-2 space-y-1 text-sm text-gray-700">
-              <li>Site inspections</li>
-              <li>Project supervision</li>
-              <li>Maintenance operations</li>
-              <li>Quality and safety checks</li>
-            </ul>
-          </div>
+          {responsibilities.map((r) => (
+            <div key={r.title} className="bg-white p-6 rounded-lg shadow-md border">
+              <div className="flex items-start gap-4">
+                <div className="flex-shrink-0">
+                  <div className="h-12 w-12 rounded-full bg-primary-500 text-white flex items-center justify-center font-semibold">{r.title.split(' ')[0].slice(0,2)}</div>
+                </div>
+                <div>
+                  <h3 className="text-lg font-semibold">{r.title}</h3>
+                  <ul className="list-disc list-inside mt-2 text-sm text-gray-700 space-y-1">
+                    {r.items.map((it) => <li key={it}>{it}</li>)}
+                  </ul>
+                </div>
+              </div>
+            </div>
+          ))}
         </div>
       </section>
     </main>
