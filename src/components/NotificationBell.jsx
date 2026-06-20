@@ -1,5 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Bell, X, Settings, Check } from 'lucide-react';
+import { collection, query, orderBy, limit, onSnapshot, doc, updateDoc, writeBatch } from 'firebase/firestore';
+import { db } from '../services/firebase';
 
 const NotificationBell = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -7,60 +9,67 @@ const NotificationBell = () => {
   const [unreadCount, setUnreadCount] = useState(0);
   const [showPreferences, setShowPreferences] = useState(false);
 
-  // Load notifications from localStorage
+  // Load notifications from Firebase
   useEffect(() => {
-    const saved = localStorage.getItem('notifications');
-    if (saved) {
-      const parsed = JSON.parse(saved);
-      setNotifications(parsed);
-      setUnreadCount(parsed.filter(n => !n.read).length);
-    }
+    // Try to fetch from Firebase notifications collection
+    const notificationsQuery = query(
+      collection(db, 'notifications'),
+      orderBy('createdAt', 'desc'),
+      limit(10)
+    );
 
-    // Generate sample notifications based on tender data
-    generateSampleNotifications();
+    const unsubscribe = onSnapshot(notificationsQuery, (snapshot) => {
+      const fetchedNotifications = snapshot.docs.map(doc => ({
+        id: doc.id,
+        ...doc.data(),
+        read: doc.data().read || false
+      }));
+      setNotifications(fetchedNotifications);
+      setUnreadCount(fetchedNotifications.filter(n => !n.read).length);
+    }, (error) => {
+      console.error('Error fetching notifications:', error);
+      // Fallback to empty notifications if Firebase fails
+      setNotifications([]);
+      setUnreadCount(0);
+    });
+
+    return () => unsubscribe();
   }, []);
 
-  const generateSampleNotifications = () => {
-    const today = new Date();
-    const sampleNotifications = [
-      {
-        id: 1,
-        type: 'deadline',
-        title: 'Deadline Alert: Monitor and Laptop Supply',
-        message: '1 day remaining - IUM tender closing tomorrow',
-        tenderId: 'TND-2026-001',
-        date: today.toISOString(),
-        read: false
-      },
-      {
-        id: 2,
-        type: 'opening',
-        title: 'Bid Opening Today: 40 Laptops Supply',
-        message: 'IUM bid opening at 14:00',
-        tenderId: 'TND-2026-002',
-        date: today.toISOString(),
-        read: false
-      }
-    ];
-    
-    setNotifications(sampleNotifications);
-    setUnreadCount(2);
-  };
-
-  const markAsRead = (id) => {
+  const markAsRead = async (id) => {
+    // Update local state immediately for responsiveness
     const updated = notifications.map(n => 
       n.id === id ? { ...n, read: true } : n
     );
     setNotifications(updated);
     setUnreadCount(updated.filter(n => !n.read).length);
-    localStorage.setItem('notifications', JSON.stringify(updated));
+    
+    // Update in Firebase
+    try {
+      const notificationRef = doc(db, 'notifications', id);
+      await updateDoc(notificationRef, { read: true });
+    } catch (error) {
+      console.error('Error marking notification as read:', error);
+    }
   };
 
-  const markAllRead = () => {
+  const markAllRead = async () => {
+    // Update local state immediately
     const updated = notifications.map(n => ({ ...n, read: true }));
     setNotifications(updated);
     setUnreadCount(0);
-    localStorage.setItem('notifications', JSON.stringify(updated));
+    
+    // Update all in Firebase
+    try {
+      const batch = writeBatch(db);
+      notifications.forEach(notification => {
+        const notificationRef = doc(db, 'notifications', notification.id);
+        batch.update(notificationRef, { read: true });
+      });
+      await batch.commit();
+    } catch (error) {
+      console.error('Error marking all notifications as read:', error);
+    }
   };
 
   const getIcon = (type) => {
