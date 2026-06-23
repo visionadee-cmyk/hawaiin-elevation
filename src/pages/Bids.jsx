@@ -2369,10 +2369,152 @@ const Bids = ({ initialFilter }) => {
         />
       )}
       {showOpenBidsReport && (
-        <OpenBidsReport 
-          bids={bids} 
-          onClose={() => setShowOpenBidsReport(false)} 
+        <OpenBidsReport
+          bids={bids}
+          onClose={() => setShowOpenBidsReport(false)}
         />
+      )}
+
+      {/* Competitor Submissions Form */}
+      {showCompetitorForm && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
+          <div className="bg-white rounded-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+            <div className="p-6 border-b border-gray-200 flex justify-between items-center">
+              <h2 className="text-xl font-bold text-gray-900">Record Competitor Submissions</h2>
+              <button
+                onClick={() => setShowCompetitorForm(false)}
+                className="p-2 hover:bg-gray-100 rounded-lg"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            <div className="p-6 space-y-6">
+              {/* Auto-filled Bid Information */}
+              <div className="bg-blue-50 p-4 rounded-lg">
+                <h3 className="font-semibold text-blue-800 mb-3">Bid Information</h3>
+                <div className="grid grid-cols-2 gap-4 text-sm">
+                  <div>
+                    <span className="text-gray-600">Title:</span>
+                    <p className="font-medium">{editingBid?.title}</p>
+                  </div>
+                  <div>
+                    <span className="text-gray-600">Tender ID:</span>
+                    <p className="font-medium">{editingBid?.tenderId}</p>
+                  </div>
+                  <div>
+                    <span className="text-gray-600">Submission Deadline:</span>
+                    <p className="font-medium">{editingBid?.submissionDeadline}</p>
+                  </div>
+                  <div>
+                    <span className="text-gray-600">Submission Time:</span>
+                    <p className="font-medium">{editingBid?.submissionTime}</p>
+                  </div>
+                </div>
+              </div>
+
+              {/* Add Competitor Form */}
+              <div className="bg-gray-50 p-4 rounded-lg">
+                <h3 className="font-semibold text-gray-800 mb-3">Add Competitor</h3>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">Company Name</label>
+                    <input
+                      type="text"
+                      value={competitorFormData.competitorName}
+                      onChange={(e) => setCompetitorFormData({ ...competitorFormData, competitorName: e.target.value })}
+                      className="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500"
+                      placeholder="Enter company name"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">Value (MVR)</label>
+                    <input
+                      type="number"
+                      step="0.01"
+                      value={competitorFormData.value}
+                      onChange={(e) => setCompetitorFormData({ ...competitorFormData, value: e.target.value })}
+                      className="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500"
+                      placeholder="Enter bid value"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">Duration</label>
+                    <input
+                      type="text"
+                      value={competitorFormData.duration}
+                      onChange={(e) => setCompetitorFormData({ ...competitorFormData, duration: e.target.value })}
+                      className="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500"
+                      placeholder="e.g., 6 months"
+                    />
+                  </div>
+                </div>
+                <button
+                  onClick={handleAddCompetitor}
+                  className="mt-3 btn-secondary flex items-center gap-2"
+                >
+                  <Plus className="w-4 h-4" />
+                  Add Competitor
+                </button>
+              </div>
+
+              {/* Competitors List */}
+              {competitorSubmissions.length > 0 && (
+                <div>
+                  <h3 className="font-semibold text-gray-800 mb-3">Competitors ({competitorSubmissions.length})</h3>
+                  <div className="space-y-2">
+                    {competitorSubmissions.map((submission, index) => (
+                      <div key={index} className="flex items-center justify-between p-3 bg-white border rounded-lg">
+                        <div className="flex-1">
+                          <p className="font-medium">{submission.competitorName}</p>
+                          <div className="flex gap-4 text-sm text-gray-600">
+                            <span>MVR {submission.value?.toLocaleString()}</span>
+                            <span>{submission.duration}</span>
+                          </div>
+                        </div>
+                        <button
+                          onClick={() => handleRemoveCompetitor(index)}
+                          className="p-2 hover:bg-red-50 rounded-lg text-red-500"
+                        >
+                          <Trash2 className="w-4 h-4" />
+                        </button>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* Action Buttons */}
+              <div className="flex justify-between gap-4 pt-4 border-t">
+                <button
+                  onClick={() => {
+                    setShowCompetitorForm(false);
+                    setCompetitorSubmissions([]);
+                  }}
+                  className="btn-secondary"
+                >
+                  Skip for Now
+                </button>
+                <div className="flex gap-3">
+                  <button
+                    onClick={() => navigate('/competitor-submissions')}
+                    className="btn-secondary flex items-center gap-2"
+                  >
+                    View All Submissions
+                    <ArrowRight className="w-4 h-4" />
+                  </button>
+                  <button
+                    onClick={handleSaveCompetitorSubmissions}
+                    disabled={competitorSubmissions.length === 0}
+                    className="btn-primary disabled:opacity-50 disabled:cursor-not-allowed"
+                  >
+                    Save Submissions
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       )}
     </div>
   );
