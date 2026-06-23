@@ -43,6 +43,7 @@ const Bids = ({ initialFilter }) => {
     value: '',
     duration: ''
   });
+  const [competitorBidData, setCompetitorBidData] = useState(null);
   
   // User-defined cost types persisted in localStorage
   const [userDefinedCostTypes, setUserDefinedCostTypes] = useState(() => {
