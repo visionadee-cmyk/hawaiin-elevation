@@ -1,18 +1,32 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Bell, CheckCircle, AlertCircle, Clock, FileText, DollarSign, Trash2, Settings, Filter, BellOff } from 'lucide-react';
-
-const mockNotifications = [
-  { id: 1, type: 'deadline', title: 'Bid deadline approaching', message: 'IT Equipment Supply tender closes in 2 days', timestamp: '2026-03-29 09:30', read: false, tender: 'IT Equipment Supply' },
-  { id: 2, type: 'result', title: 'Bid result announced', message: 'Your bid for Office Renovation has been awarded', timestamp: '2026-03-28 14:15', read: false, tender: 'Office Renovation' },
-  { id: 3, type: 'payment', title: 'Payment received', message: 'MVR 1,250,000 received from Ministry of Education', timestamp: '2026-03-27 11:00', read: true, tender: 'IT Equipment Supply' },
-  { id: 4, type: 'system', title: 'New tender alert', message: '3 new tenders matching your criteria', timestamp: '2026-03-26 08:00', read: true, tender: null },
-  { id: 5, type: 'deadline', title: 'Contract renewal', message: 'Maldives Ports contract expires in 30 days', timestamp: '2026-03-25 16:45', read: true, tender: 'Annual Maintenance' },
-  { id: 6, type: 'mention', title: 'You were mentioned', message: 'Ahmed mentioned you in Office Renovation comments', timestamp: '2026-03-24 10:30', read: true, tender: 'Office Renovation' },
-];
+import { collection, query, orderBy, onSnapshot, doc, updateDoc, deleteDoc } from 'firebase/firestore';
+import { db } from '../services/firebase';
 
 export default function NotificationCenter() {
-  const [notifications, setNotifications] = useState(mockNotifications);
+  const [notifications, setNotifications] = useState([]);
   const [filter, setFilter] = useState('all');
+
+  useEffect(() => {
+    const notificationsQuery = query(
+      collection(db, 'notifications'),
+      orderBy('createdAt', 'desc')
+    );
+
+    const unsubscribe = onSnapshot(notificationsQuery, (snapshot) => {
+      const fetchedNotifications = snapshot.docs.map(doc => ({
+        id: doc.id,
+        ...doc.data(),
+        read: doc.data().read || false
+      }));
+      setNotifications(fetchedNotifications);
+    }, (error) => {
+      console.error('Error fetching notifications:', error);
+      setNotifications([]);
+    });
+
+    return () => unsubscribe();
+  }, []);
 
   const unreadCount = notifications.filter(n => !n.read).length;
   
@@ -22,16 +36,50 @@ export default function NotificationCenter() {
     ? notifications.filter(n => !n.read)
     : notifications.filter(n => n.type === filter);
 
-  const markAsRead = (id) => {
-    setNotifications(notifications.map(n => n.id === id ? { ...n, read: true } : n));
+  const markAsRead = async (id) => {
+    // Update local state immediately for responsiveness
+    const updated = notifications.map(n =>
+      n.id === id ? { ...n, read: true } : n
+    );
+    setNotifications(updated);
+
+    // Update in Firebase
+    try {
+      const notificationRef = doc(db, 'notifications', id);
+      await updateDoc(notificationRef, { read: true });
+    } catch (error) {
+      console.error('Error marking notification as read:', error);
+    }
   };
 
-  const markAllRead = () => {
-    setNotifications(notifications.map(n => ({ ...n, read: true })));
+  const markAllRead = async () => {
+    // Update local state immediately
+    const updated = notifications.map(n => ({ ...n, read: true }));
+    setNotifications(updated);
+
+    // Update all in Firebase
+    try {
+      const batch = notifications.map(notification => {
+        const notificationRef = doc(db, 'notifications', notification.id);
+        return updateDoc(notificationRef, { read: true });
+      });
+      await Promise.all(batch);
+    } catch (error) {
+      console.error('Error marking all notifications as read:', error);
+    }
   };
 
-  const deleteNotification = (id) => {
+  const deleteNotification = async (id) => {
+    // Update local state immediately
     setNotifications(notifications.filter(n => n.id !== id));
+
+    // Delete from Firebase
+    try {
+      const notificationRef = doc(db, 'notifications', id);
+      await deleteDoc(notificationRef);
+    } catch (error) {
+      console.error('Error deleting notification:', error);
+    }
   };
 
   const getIcon = (type) => {
@@ -137,7 +185,7 @@ export default function NotificationCenter() {
                   </h4>
                   <p className="text-sm text-gray-600 mt-1">{notification.message}</p>
                   <div className="flex items-center gap-3 mt-2 text-xs text-gray-500">
-                    <span>{notification.timestamp}</span>
+                    <span>{notification.createdAt ? new Date(notification.createdAt.toDate ? notification.createdAt.toDate() : notification.createdAt).toLocaleString() : notification.timestamp}</span>
                     {notification.tender && (
                       <>
                         <span>•</span>
