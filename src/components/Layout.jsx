@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import Sidebar from './Sidebar';
 import Footer from './Footer';
 import NotificationBell from './NotificationBell';
+import PWAInstall from './PWAInstall';
 
 const Layout = ({ children }) => {
   const [isMobile, setIsMobile] = useState(false);
@@ -33,6 +34,7 @@ const Layout = ({ children }) => {
           <Footer />
         </div>
       </main>
+      <PWAInstall />
     </div>
   );
 };
