@@ -1,5 +1,7 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import { Calculator, DollarSign, ShoppingCart, Package, Save, FileText, Trash2, Plus, Truck, Utensils, Percent } from 'lucide-react';
+import { collection, addDoc, deleteDoc, doc, onSnapshot, query, orderBy } from 'firebase/firestore';
+import { db } from '../services/firebase';
 
 export default function CostCalculator() {
   const [items, setItems] = useState([]);
@@ -11,11 +13,24 @@ export default function CostCalculator() {
     { id: 4, name: 'Materials', amount: 0, unitType: 'total', days: 1, people: 1 },
     { id: 5, name: 'Other', amount: 0, unitType: 'total', days: 1, people: 1 }
   ]);
-  const [savedCalculations, setSavedCalculations] = useState(() => {
-    const saved = localStorage.getItem('costCalculatorSaved');
-    return saved ? JSON.parse(saved) : [];
-  });
+  const [savedCalculations, setSavedCalculations] = useState([]);
   const [newItem, setNewItem] = useState({ name: '', unitCost: '', quantity: 1 });
+
+  // Load saved calculations from Firestore
+  useEffect(() => {
+    const calculationsQuery = query(collection(db, 'costCalculations'), orderBy('createdAt', 'desc'));
+    const unsubscribe = onSnapshot(calculationsQuery, (snapshot) => {
+      const fetchedCalculations = snapshot.docs.map(doc => ({
+        id: doc.id,
+        ...doc.data()
+      }));
+      setSavedCalculations(fetchedCalculations);
+    }, (error) => {
+      console.error('Error fetching calculations:', error);
+    });
+
+    return () => unsubscribe();
+  }, []);
 
   const addItem = () => {
     if (!newItem.name || !newItem.unitCost) return;
@@ -83,19 +98,33 @@ export default function CostCalculator() {
     };
   }, [items, otherCosts, profitPercentage]);
 
-  const saveCalculation = () => {
-    const calculation = {
-      id: Date.now(),
-      name: `Calculation ${savedCalculations.length + 1}`,
-      items: [...items],
-      otherCosts: [...otherCosts],
-      profitPercentage,
-      ...calculations,
-      date: new Date().toLocaleDateString()
-    };
-    const updated = [...savedCalculations, calculation];
-    setSavedCalculations(updated);
-    localStorage.setItem('costCalculatorSaved', JSON.stringify(updated));
+  const saveCalculation = async () => {
+    try {
+      const calculation = {
+        name: `Calculation ${savedCalculations.length + 1}`,
+        items: [...items],
+        otherCosts: [...otherCosts],
+        profitPercentage,
+        totalItemsCost: calculations.totalItemsCost,
+        totalOtherCosts: calculations.totalOtherCosts,
+        subtotal: calculations.subtotal,
+        profitAmount: calculations.profitAmount,
+        suggestedBidRate: calculations.suggestedBidRate,
+        date: new Date().toLocaleDateString(),
+        createdAt: new Date()
+      };
+      await addDoc(collection(db, 'costCalculations'), calculation);
+    } catch (error) {
+      console.error('Error saving calculation:', error);
+    }
+  };
+
+  const deleteCalculation = async (id) => {
+    try {
+      await deleteDoc(doc(db, 'costCalculations', id));
+    } catch (error) {
+      console.error('Error deleting calculation:', error);
+    }
   };
 
   return (
@@ -394,17 +423,25 @@ export default function CostCalculator() {
                 {savedCalculations.map((calc) => (
                   <div key={calc.id} className="p-3 bg-gray-50 rounded-lg">
                     <div className="flex justify-between items-start">
-                      <div>
+                      <div className="flex-1">
                         <p className="font-medium">{calc.name}</p>
                         <p className="text-xs text-gray-500">{calc.date}</p>
+                        <p className="text-sm text-gray-600 mt-1">
+                          {calc.items.length} items • {calc.profitPercentage}% profit
+                        </p>
                       </div>
-                      <p className="font-semibold text-blue-700">
-                        MVR {calc.suggestedBidRate.toLocaleString()}
-                      </p>
+                      <div className="flex items-center gap-2">
+                        <p className="font-semibold text-blue-700">
+                          MVR {calc.suggestedBidRate.toLocaleString()}
+                        </p>
+                        <button 
+                          onClick={() => deleteCalculation(calc.id)}
+                          className="text-red-500 hover:text-red-700"
+                        >
+                          <Trash2 className="w-4 h-4" />
+                        </button>
+                      </div>
                     </div>
-                    <p className="text-sm text-gray-600 mt-1">
-                      {calc.items.length} items • {calc.profitPercentage}% profit
-                    </p>
                   </div>
                 ))}
               </div>
