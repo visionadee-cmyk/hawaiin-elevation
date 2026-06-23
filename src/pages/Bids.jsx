@@ -554,13 +554,14 @@ const Bids = ({ initialFilter }) => {
 
   const handleSaveCompetitorSubmissions = async () => {
     try {
+      const bidDataToUse = competitorBidData || editingBid;
       for (const submission of competitorSubmissions) {
         await addDoc(collection(db, 'competitorSubmissions'), {
-          bidId: editingBid?.id,
-          title: editingBid?.title,
-          tenderId: editingBid?.tenderId,
-          submissionDeadline: editingBid?.submissionDeadline,
-          submissionTime: editingBid?.submissionTime,
+          bidId: bidDataToUse?.id || editingBid?.id,
+          title: bidDataToUse?.title,
+          tenderId: bidDataToUse?.tenderId,
+          submissionDeadline: bidDataToUse?.submissionDeadline,
+          submissionTime: bidDataToUse?.submissionTime,
           competitorName: submission.competitorName,
           value: submission.value,
           duration: submission.duration,
@@ -570,6 +571,10 @@ const Bids = ({ initialFilter }) => {
 
       setShowCompetitorForm(false);
       setCompetitorSubmissions([]);
+      setCompetitorBidData(null);
+      setEditingBid(null);
+      resetForm();
+      fetchData();
       alert('Competitor submissions saved successfully!');
     } catch (error) {
       console.error('Error saving competitor submissions:', error);
