@@ -38,7 +38,7 @@ import { useAuth } from '../contexts/AuthContext';
 import { useState, useEffect } from 'react';
 
 const Sidebar = () => {
-  const { logout, isAdmin, userRole } = useAuth();
+  const { logout, isAdmin, isBoardMember, userRole } = useAuth();
   const navigate = useNavigate();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
@@ -94,7 +94,6 @@ const Sidebar = () => {
     { path: '/bid-comparison', icon: Scale, label: 'Bid Comparison' },
     { path: '/bid-compiler', icon: FileStack, label: 'Bid Compiler' },
     { path: '/notifications', icon: Bell, label: 'Notifications' },
-    { path: '/chat', icon: MessageCircle, label: 'Team Chat' },
     { path: '/search', icon: Search, label: 'Advanced Search' },
   ];
 
@@ -102,6 +101,11 @@ const Sidebar = () => {
   if (isAdmin()) {
     navItems.push({ path: '/users', icon: Users, label: 'Users' });
     navItems.push({ path: '/audit-log', icon: History, label: 'Audit Log' });
+  }
+
+  // Only show Chat link to board members
+  if (isBoardMember()) {
+    navItems.push({ path: '/chat', icon: MessageCircle, label: 'Team Chat' });
   }
 
   return (

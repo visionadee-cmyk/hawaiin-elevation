@@ -1,8 +1,8 @@
 import { useAuth } from '../contexts/AuthContext';
 import { Navigate } from 'react-router-dom';
 
-const ProtectedRoute = ({ children, requireAdmin = false }) => {
-  const { isAuthenticated, isAdmin, loading } = useAuth();
+const ProtectedRoute = ({ children, requireAdmin = false, requireBoardMember = false }) => {
+  const { isAuthenticated, isAdmin, isBoardMember, loading } = useAuth();
 
   if (loading) {
     return (
@@ -17,6 +17,10 @@ const ProtectedRoute = ({ children, requireAdmin = false }) => {
   }
 
   if (requireAdmin && !isAdmin()) {
+    return <Navigate to="/" replace />;
+  }
+
+  if (requireBoardMember && !isBoardMember()) {
     return <Navigate to="/" replace />;
   }
 

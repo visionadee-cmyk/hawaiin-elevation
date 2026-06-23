@@ -65,6 +65,8 @@ export const AuthProvider = ({ children }) => {
 
   const isAdmin = () => userRole === 'admin';
 
+  const isBoardMember = () => userRole === 'board_member' || userRole === 'admin';
+
   const value = {
     user,
     userRole,
@@ -73,6 +75,7 @@ export const AuthProvider = ({ children }) => {
     register,
     logout,
     isAdmin,
+    isBoardMember,
     isAuthenticated: !!user
   };
 

@@ -233,7 +233,7 @@ function App() {
       } />
 
       <Route path="/chat" element={
-        <ProtectedRoute>
+        <ProtectedRoute requireBoardMember={true}>
           <Layout>
             <Chat />
           </Layout>
