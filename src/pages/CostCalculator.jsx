@@ -1,5 +1,5 @@
 import React, { useState, useMemo, useEffect } from 'react';
-import { Calculator, DollarSign, ShoppingCart, Package, Save, FileText, Trash2, Plus, Truck, Utensils, Percent } from 'lucide-react';
+import { Calculator, DollarSign, ShoppingCart, Package, Save, FileText, Trash2, Plus, Truck, Utensils, Percent, ChevronDown, ChevronUp } from 'lucide-react';
 import { collection, addDoc, deleteDoc, doc, onSnapshot, query, orderBy } from 'firebase/firestore';
 import { db } from '../services/firebase';
 
@@ -80,6 +80,12 @@ export default function CostCalculator() {
       return cost.amount * cost.days * cost.people;
     }
     return cost.amount;
+  };
+
+  const loadCalculation = (calc) => {
+    setItems(calc.items || []);
+    setOtherCosts(calc.otherCosts || otherCosts);
+    setProfitPercentage(calc.profitPercentage || 15);
   };
 
   const calculations = useMemo(() => {
@@ -419,29 +425,116 @@ export default function CostCalculator() {
             {savedCalculations.length === 0 ? (
               <p className="text-sm text-gray-500 text-center py-4">No saved calculations yet</p>
             ) : (
-              <div className="space-y-2 max-h-60 overflow-y-auto">
+              <div className="space-y-2 max-h-[500px] overflow-y-auto">
                 {savedCalculations.map((calc) => (
-                  <div key={calc.id} className="p-3 bg-gray-50 rounded-lg">
-                    <div className="flex justify-between items-start">
-                      <div className="flex-1">
-                        <p className="font-medium">{calc.name}</p>
-                        <p className="text-xs text-gray-500">{calc.date}</p>
-                        <p className="text-sm text-gray-600 mt-1">
-                          {calc.items.length} items • {calc.profitPercentage}% profit
-                        </p>
-                      </div>
-                      <div className="flex items-center gap-2">
-                        <p className="font-semibold text-blue-700">
-                          MVR {calc.suggestedBidRate.toLocaleString()}
-                        </p>
-                        <button 
-                          onClick={() => deleteCalculation(calc.id)}
-                          className="text-red-500 hover:text-red-700"
-                        >
-                          <Trash2 className="w-4 h-4" />
-                        </button>
+                  <div key={calc.id} className="border rounded-lg overflow-hidden">
+                    <div 
+                      className="p-3 bg-gray-50 cursor-pointer hover:bg-gray-100 transition-colors"
+                      onClick={() => setExpandedCalculation(expandedCalculation === calc.id ? null : calc.id)}
+                    >
+                      <div className="flex justify-between items-start">
+                        <div className="flex-1">
+                          <div className="flex items-center gap-2">
+                            <p className="font-medium">{calc.name}</p>
+                            {expandedCalculation === calc.id ? (
+                              <ChevronUp className="w-4 h-4 text-gray-500" />
+                            ) : (
+                              <ChevronDown className="w-4 h-4 text-gray-500" />
+                            )}
+                          </div>
+                          <p className="text-xs text-gray-500">{calc.date}</p>
+                          <p className="text-sm text-gray-600 mt-1">
+                            {calc.items?.length || 0} items • {calc.profitPercentage}% profit
+                          </p>
+                        </div>
+                        <div className="flex items-center gap-2">
+                          <p className="font-semibold text-blue-700">
+                            MVR {calc.suggestedBidRate?.toLocaleString() || 0}
+                          </p>
+                          <button 
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              deleteCalculation(calc.id);
+                            }}
+                            className="text-red-500 hover:text-red-700"
+                          >
+                            <Trash2 className="w-4 h-4" />
+                          </button>
+                        </div>
                       </div>
                     </div>
+                    
+                    {expandedCalculation === calc.id && (
+                      <div className="p-4 bg-white border-t">
+                        {/* Items */}
+                        {calc.items && calc.items.length > 0 && (
+                          <div className="mb-4">
+                            <h4 className="font-medium text-sm text-gray-700 mb-2">Items</h4>
+                            <div className="space-y-1">
+                              {calc.items.map((item, idx) => (
+                                <div key={idx} className="flex justify-between text-sm">
+                                  <span>{item.name} (×{item.quantity})</span>
+                                  <span className="font-medium">MVR {item.totalCost?.toLocaleString() || 0}</span>
+                                </div>
+                              ))}
+                            </div>
+                          </div>
+                        )}
+                        
+                        {/* Additional Costs */}
+                        {calc.otherCosts && calc.otherCosts.length > 0 && (
+                          <div className="mb-4">
+                            <h4 className="font-medium text-sm text-gray-700 mb-2">Additional Costs</h4>
+                            <div className="space-y-1">
+                              {calc.otherCosts.map((cost) => {
+                                const costAmount = calculateCostAmount(cost);
+                                if (costAmount > 0) {
+                                  return (
+                                    <div key={cost.id} className="flex justify-between text-sm">
+                                      <span>{cost.name}</span>
+                                      <span className="font-medium">MVR {costAmount.toLocaleString()}</span>
+                                    </div>
+                                  );
+                                }
+                                return null;
+                              })}
+                            </div>
+                          </div>
+                        )}
+                        
+                        {/* Summary */}
+                        <div className="border-t pt-3 space-y-1">
+                          <div className="flex justify-between text-sm">
+                            <span className="text-gray-600">Items Total:</span>
+                            <span>MVR {calc.totalItemsCost?.toLocaleString() || 0}</span>
+                          </div>
+                          <div className="flex justify-between text-sm">
+                            <span className="text-gray-600">Additional Costs:</span>
+                            <span>MVR {calc.totalOtherCosts?.toLocaleString() || 0}</span>
+                          </div>
+                          <div className="flex justify-between text-sm">
+                            <span className="text-gray-700 font-medium">Subtotal:</span>
+                            <span className="font-medium">MVR {calc.subtotal?.toLocaleString() || 0}</span>
+                          </div>
+                          <div className="flex justify-between text-sm">
+                            <span className="text-gray-600">Profit ({calc.profitPercentage}%):</span>
+                            <span className="text-amber-600">+MVR {calc.profitAmount?.toLocaleString() || 0}</span>
+                          </div>
+                          <div className="flex justify-between text-sm font-semibold pt-2 border-t">
+                            <span>Suggested Bid Rate:</span>
+                            <span className="text-blue-700">MVR {calc.suggestedBidRate?.toLocaleString() || 0}</span>
+                          </div>
+                        </div>
+                        
+                        {/* Load Button */}
+                        <button
+                          onClick={() => loadCalculation(calc)}
+                          className="mt-4 w-full btn btn-secondary text-sm"
+                        >
+                          Load This Calculation
+                        </button>
+                      </div>
+                    )}
                   </div>
                 ))}
               </div>
