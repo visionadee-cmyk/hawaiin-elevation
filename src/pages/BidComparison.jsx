@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { Scale, CheckCircle, XCircle, DollarSign, Clock, FileText, ArrowRight, Plus, Trash2, Building2 } from 'lucide-react';
-import { collection, query, onSnapshot, where } from 'firebase/firestore';
+import { Building2 } from 'lucide-react';
+import { collection, query, onSnapshot } from 'firebase/firestore';
 import { db } from '../services/firebase';
 
 export default function BidComparison() {
@@ -15,6 +15,15 @@ export default function BidComparison() {
     const bidsQuery = query(collection(db, 'bids'));
     const unsubscribeBids = onSnapshot(bidsQuery, (snapshot) => {
       const fetchedBids = snapshot.docs.map(doc => ({
+        id: doc.id,
+        ...doc.data()
+      }));
+      setBids(fetchedBids);
+      setLoading(false);
+    }, (error) => {
+      console.error('Error fetching bids:', error);
+      setLoading(false);
+    });
 
     // Fetch competitor submissions
     const submissionsQuery = query(collection(db, 'competitorSubmissions'));
@@ -47,16 +56,6 @@ export default function BidComparison() {
   const selectedBidCompetitors = selectedBid ? getCompetitorsForBid(selectedBid.id) : [];
   const selectedCompetitorData = selectedBidCompetitors.filter(c => selectedCompetitors.includes(c.id));
   const lowestPrice = selectedBidCompetitors.length > 0 ? Math.min(...selectedBidCompetitors.map(c => c.value || 0)) : 0;
-
-  const toggleBidSelection = (id) => {
-    setSelectedBids(prev => 
-      prev.includes(id) ? prev.filter(b => b !== id) : [...prev, id]
-    );
-  };
-
-  const selectedBidData = comparison.bids.filter(b => selectedBids.includes(b.id));
-  const lowestPrice = Math.min(...comparison.bids.map(b => b.amount));
-  const bestRating = Math.max(...comparison.bids.map(b => b.rating));
 
   return (
     <div className="space-y-6">
