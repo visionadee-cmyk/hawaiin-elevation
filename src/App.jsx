@@ -28,6 +28,7 @@ import Chat from './pages/Chat';
 import StaffExpense from './pages/StaffExpense';
 import BidCompiler from './pages/BidCompiler';
 import BoardMembers from './pages/BoardMembers';
+import CompetitorSubmissions from './pages/CompetitorSubmissions';
 
 import { useAuth } from './contexts/AuthContext';
 
@@ -87,7 +88,15 @@ function App() {
           </Layout>
         </ProtectedRoute>
       } />
-      
+
+      <Route path="/competitor-submissions" element={
+        <ProtectedRoute>
+          <Layout>
+            <CompetitorSubmissions />
+          </Layout>
+        </ProtectedRoute>
+      } />
+
       <Route path="/staff-expense" element={
         <ProtectedRoute>
           <Layout>

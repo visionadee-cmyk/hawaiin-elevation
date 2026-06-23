@@ -81,6 +81,7 @@ const Sidebar = () => {
     { path: '/bids', icon: DollarSign, label: 'Bids' },
     { path: '/bids/won', icon: CheckCircle, label: 'Won Bids' },
     { path: '/bids/pending', icon: Clock, label: 'Pending Bids' },
+    { path: '/competitor-submissions', icon: Building2, label: 'Competitor Submissions' },
     { path: '/quotations', icon: Receipt, label: 'Quotations' },
     { path: '/staff-expense', icon: Wallet, label: 'Staff Expense' },
     { path: '/cost-calculator', icon: Calculator, label: 'Cost Calculator' },

@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Plus, Search, Edit2, Trash2, Eye, X, FileText, CheckCircle, XCircle, Clock, DollarSign, ExternalLink, Calendar, Building2, Mail, Phone, Globe, Hash, Trash, LayoutGrid, Table2, Timer, ChevronRight, Upload, Printer, Download, FileStack } from 'lucide-react';
+import { Plus, Search, Edit2, Trash2, Eye, X, FileText, CheckCircle, XCircle, Clock, DollarSign, ExternalLink, Calendar, Building2, Mail, Phone, Globe, Hash, Trash, LayoutGrid, Table2, Timer, ChevronRight, Upload, Printer, Download, FileStack, ArrowRight } from 'lucide-react';
 import { format, differenceInDays, parseISO } from 'date-fns';
 import { useAuth } from '../contexts/AuthContext';
 import { 
@@ -36,6 +36,13 @@ const Bids = ({ initialFilter }) => {
   const [showQuotation, setShowQuotation] = useState(false);
   const [quotationBid, setQuotationBid] = useState(null);
   const [showOpenBidsReport, setShowOpenBidsReport] = useState(false);
+  const [showCompetitorForm, setShowCompetitorForm] = useState(false);
+  const [competitorSubmissions, setCompetitorSubmissions] = useState([]);
+  const [competitorFormData, setCompetitorFormData] = useState({
+    competitorName: '',
+    value: '',
+    duration: ''
+  });
   
   // User-defined cost types persisted in localStorage
   const [userDefinedCostTypes, setUserDefinedCostTypes] = useState(() => {
@@ -467,10 +474,16 @@ const Bids = ({ initialFilter }) => {
 
       if (editingBid) {
         await updateDoc(doc(db, 'bids', editingBid.id), bidData);
+
+        // Check if status changed to Submitted and show competitor form
+        if (bidData.status === 'Submitted' && editingBid.status !== 'Submitted') {
+          setShowCompetitorForm(true);
+          setCompetitorSubmissions([]);
+        }
       } else {
         bidData.createdAt = serverTimestamp();
         await addDoc(collection(db, 'bids'), bidData);
-        
+
         // Send new bid notification
         try {
           await fetch('/api/notifications/new-bid', {
@@ -502,6 +515,53 @@ const Bids = ({ initialFilter }) => {
     } catch (error) {
       console.error('Error deleting bid:', error);
       alert('Error deleting bid. Please try again.');
+    }
+  };
+
+  const handleAddCompetitor = () => {
+    if (!competitorFormData.competitorName || !competitorFormData.value || !competitorFormData.duration) {
+      alert('Please fill in all competitor fields');
+      return;
+    }
+
+    setCompetitorSubmissions([
+      ...competitorSubmissions,
+      {
+        competitorName: competitorFormData.competitorName,
+        value: parseFloat(competitorFormData.value),
+        duration: competitorFormData.duration
+      }
+    ]);
+
+    setCompetitorFormData({ competitorName: '', value: '', duration: '' });
+  };
+
+  const handleRemoveCompetitor = (index) => {
+    setCompetitorSubmissions(competitorSubmissions.filter((_, i) => i !== index));
+  };
+
+  const handleSaveCompetitorSubmissions = async () => {
+    try {
+      for (const submission of competitorSubmissions) {
+        await addDoc(collection(db, 'competitorSubmissions'), {
+          bidId: editingBid?.id,
+          title: editingBid?.title,
+          tenderId: editingBid?.tenderId,
+          submissionDeadline: editingBid?.submissionDeadline,
+          submissionTime: editingBid?.submissionTime,
+          competitorName: submission.competitorName,
+          value: submission.value,
+          duration: submission.duration,
+          createdAt: new Date().toISOString()
+        });
+      }
+
+      setShowCompetitorForm(false);
+      setCompetitorSubmissions([]);
+      alert('Competitor submissions saved successfully!');
+    } catch (error) {
+      console.error('Error saving competitor submissions:', error);
+      alert('Error saving competitor submissions. Please try again.');
     }
   };
 
