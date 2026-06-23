@@ -16,6 +16,9 @@ export default function CompetitorSubmissions() {
   const [expandedCompetitor, setExpandedCompetitor] = useState(null);
   const navigate = useNavigate();
 
+  // Ensure expandedBidId is always defined
+  const safeExpandedBidId = expandedBidId;
+
   const [formData, setFormData] = useState({
     bidId: '',
     competitorName: '',
