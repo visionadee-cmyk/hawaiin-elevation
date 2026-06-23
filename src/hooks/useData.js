@@ -1,74 +1,6 @@
-import { useState, useEffect, useMemo } from 'react';
-
-// Mock data for development - replace with actual API calls
-const mockBids = [
-  {
-    id: 1,
-    tender_title: 'Supply of Computer Equipment',
-    title: 'Supply of Computer Equipment',
-    authority: 'Ministry of Education',
-    bid_amount: 150000,
-    result: 'Won',
-    status: 'Submitted',
-    submission_deadline: '2026-04-15',
-    category: 'IT Equipment'
-  },
-  {
-    id: 2,
-    tender_title: 'Office Furniture Supply',
-    title: 'Office Furniture Supply',
-    authority: 'Public Service Commission',
-    bid_amount: 85000,
-    result: 'Pending',
-    status: 'Draft',
-    submission_deadline: '2026-04-20',
-    category: 'Furniture'
-  },
-  {
-    id: 3,
-    tender_title: 'Network Infrastructure',
-    title: 'Network Infrastructure',
-    authority: 'Housing Development Corporation',
-    bid_amount: 250000,
-    result: 'Lost',
-    status: 'Submitted',
-    submission_deadline: '2026-03-30',
-    category: 'IT Infrastructure'
-  }
-];
-
-const mockTenders = [
-  {
-    id: 1,
-    title: 'Supply of Computer Equipment',
-    authority: 'Ministry of Education',
-    amount: 200000,
-    submission_deadline: '2026-04-15',
-    bid_opening_date: '2026-04-16',
-    category: 'IT Equipment',
-    status: 'Open'
-  },
-  {
-    id: 2,
-    title: 'Office Renovation Project',
-    authority: 'Health Ministry',
-    amount: 500000,
-    submission_deadline: '2026-05-01',
-    bid_opening_date: '2026-05-02',
-    category: 'Construction',
-    status: 'Open'
-  },
-  {
-    id: 3,
-    title: 'Vehicle Maintenance Services',
-    authority: 'Police Service',
-    amount: 120000,
-    submission_deadline: '2026-04-10',
-    bid_opening_date: '2026-04-11',
-    category: 'Services',
-    status: 'Closed'
-  }
-];
+import { useState, useEffect } from 'react';
+import { collection, getDocs } from 'firebase/firestore';
+import { db } from '../services/firebase';
 
 export function useData() {
   const [bids, setBids] = useState([]);
@@ -77,18 +9,36 @@ export function useData() {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    // Simulate API call
     const loadData = async () => {
       try {
         setLoading(true);
-        // In production, replace with actual API calls
-        // const bidsData = await fetchBids();
-        // const tendersData = await fetchTenders();
         
-        setBids(mockBids);
-        setTenders(mockTenders);
+        // Fetch bids from Firebase
+        const bidsSnapshot = await getDocs(collection(db, 'bids'));
+        const bidsData = bidsSnapshot.docs.map(doc => ({
+          id: doc.id,
+          ...doc.data(),
+          createdAt: doc.data().createdAt?.toDate?.() || new Date()
+        }));
+        setBids(bidsData);
+        
+        // Fetch tenders from Firebase (if collection exists)
+        try {
+          const tendersSnapshot = await getDocs(collection(db, 'tenders'));
+          const tendersData = tendersSnapshot.docs.map(doc => ({
+            id: doc.id,
+            ...doc.data()
+          }));
+          setTenders(tendersData);
+        } catch (tenderError) {
+          // Tenders collection might not exist, that's okay
+          console.log('Tenders collection not found:', tenderError);
+          setTenders([]);
+        }
+        
         setError(null);
       } catch (err) {
+        console.error('Error loading data:', err);
         setError(err.message);
       } finally {
         setLoading(false);
@@ -99,13 +49,7 @@ export function useData() {
   }, []);
 
   const refresh = () => {
-    setLoading(true);
-    // Reload data
-    setTimeout(() => {
-      setBids([...mockBids]);
-      setTenders([...mockTenders]);
-      setLoading(false);
-    }, 500);
+    loadData();
   };
 
   return {

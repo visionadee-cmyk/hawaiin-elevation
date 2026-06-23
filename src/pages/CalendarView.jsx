@@ -10,43 +10,52 @@ export default function CalendarView() {
 
   const events = useMemo(() => {
     const allEvents = [];
-    
+
     // Add bid submission deadlines
     bids.forEach(bid => {
-      if (bid.submission_deadline) {
+      if (bid.submissionDeadline) {
         allEvents.push({
           id: `bid-${bid.id}`,
-          title: bid.tender_title || bid.title || 'Bid Due',
-          date: new Date(bid.submission_deadline),
+          title: bid.title || 'Bid Due',
+          date: new Date(bid.submissionDeadline),
           type: 'deadline',
           status: bid.status || 'Pending',
-          amount: bid.bid_amount
+          amount: bid.bidAmount
         });
       }
-      if (bid.bid_opening_date) {
+      if (bid.bidOpeningDate) {
         allEvents.push({
           id: `opening-${bid.id}`,
-          title: `Opening: ${bid.tender_title || bid.title}`,
-          date: new Date(bid.bid_opening_date),
+          title: `Opening: ${bid.title}`,
+          date: new Date(bid.bidOpeningDate),
           type: 'opening',
           status: bid.status
         });
       }
+      if (bid.registrationDeadline) {
+        allEvents.push({
+          id: `registration-${bid.id}`,
+          title: `Registration: ${bid.title}`,
+          date: new Date(bid.registrationDeadline),
+          type: 'registration',
+          status: bid.status
+        });
+      }
     });
-    
+
     // Add tender deadlines
     tenders.forEach(tender => {
-      if (tender.submission_deadline) {
+      if (tender.submissionDeadline) {
         allEvents.push({
           id: `tender-${tender.id}`,
           title: tender.title,
-          date: new Date(tender.submission_deadline),
+          date: new Date(tender.submissionDeadline),
           type: 'tender',
           status: tender.status
         });
       }
     });
-    
+
     return allEvents.sort((a, b) => a.date - b.date);
   }, [bids, tenders]);
 
@@ -197,11 +206,12 @@ export default function CalendarView() {
                   </div>
                   <div className="space-y-1">
                     {dayEvents.slice(0, 3).map((event, idx) => (
-                      <div 
+                      <div
                         key={idx}
                         className={`text-xs px-2 py-1 rounded truncate ${
                           event.type === 'deadline' ? 'bg-red-100 text-red-700' :
                           event.type === 'opening' ? 'bg-blue-100 text-blue-700' :
+                          event.type === 'registration' ? 'bg-purple-100 text-purple-700' :
                           'bg-amber-100 text-amber-700'
                         }`}
                       >
@@ -239,6 +249,7 @@ export default function CalendarView() {
                 className={`p-3 rounded-lg border-l-4 ${
                   event.type === 'deadline' ? 'bg-red-50 border-red-500' :
                   event.type === 'opening' ? 'bg-blue-50 border-blue-500' :
+                  event.type === 'registration' ? 'bg-purple-50 border-purple-500' :
                   'bg-amber-50 border-amber-500'
                 }`}
               >
@@ -258,6 +269,7 @@ export default function CalendarView() {
                   <span className={`text-xs px-2 py-1 rounded ${
                     event.type === 'deadline' ? 'bg-red-100 text-red-700' :
                     event.type === 'opening' ? 'bg-blue-100 text-blue-700' :
+                    event.type === 'registration' ? 'bg-purple-100 text-purple-700' :
                     'bg-amber-100 text-amber-700'
                   }`}>
                     {event.type}
