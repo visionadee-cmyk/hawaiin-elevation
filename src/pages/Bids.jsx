@@ -477,6 +477,8 @@ const Bids = ({ initialFilter }) => {
 
         // Check if status changed to Submitted and show competitor form
         if (bidData.status === 'Submitted' && editingBid.status !== 'Submitted') {
+          // Update editingBid with current form data for the competitor form
+          setEditingBid({ ...editingBid, ...formData });
           setShowCompetitorForm(true);
           setCompetitorSubmissions([]);
         }
