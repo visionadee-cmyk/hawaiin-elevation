@@ -11,7 +11,10 @@ export default function CostCalculator() {
     { id: 4, name: 'Materials', amount: 0, unitType: 'total', days: 1, people: 1 },
     { id: 5, name: 'Other', amount: 0, unitType: 'total', days: 1, people: 1 }
   ]);
-  const [savedCalculations, setSavedCalculations] = useState([]);
+  const [savedCalculations, setSavedCalculations] = useState(() => {
+    const saved = localStorage.getItem('costCalculatorSaved');
+    return saved ? JSON.parse(saved) : [];
+  });
   const [newItem, setNewItem] = useState({ name: '', unitCost: '', quantity: 1 });
 
   const addItem = () => {
@@ -90,7 +93,9 @@ export default function CostCalculator() {
       ...calculations,
       date: new Date().toLocaleDateString()
     };
-    setSavedCalculations([...savedCalculations, calculation]);
+    const updated = [...savedCalculations, calculation];
+    setSavedCalculations(updated);
+    localStorage.setItem('costCalculatorSaved', JSON.stringify(updated));
   };
 
   return (
@@ -376,13 +381,15 @@ export default function CostCalculator() {
           </div>
 
           {/* Saved Calculations */}
-          {savedCalculations.length > 0 && (
-            <div className="card">
-              <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
-                <FileText className="w-5 h-5" />
-                Saved Calculations
-              </h3>
-              
+          <div className="card">
+            <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
+              <FileText className="w-5 h-5" />
+              Saved Calculations
+            </h3>
+            
+            {savedCalculations.length === 0 ? (
+              <p className="text-sm text-gray-500 text-center py-4">No saved calculations yet</p>
+            ) : (
               <div className="space-y-2 max-h-60 overflow-y-auto">
                 {savedCalculations.map((calc) => (
                   <div key={calc.id} className="p-3 bg-gray-50 rounded-lg">
@@ -401,8 +408,8 @@ export default function CostCalculator() {
                   </div>
                 ))}
               </div>
-            </div>
-          )}
+            )}
+          </div>
         </div>
       </div>
     </div>
