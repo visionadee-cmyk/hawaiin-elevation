@@ -14,6 +14,7 @@ export default function CostCalculator() {
     { id: 5, name: 'Other', amount: 0, unitType: 'total', days: 1, people: 1 }
   ]);
   const [savedCalculations, setSavedCalculations] = useState([]);
+  const [expandedCalculation, setExpandedCalculation] = useState(null);
   const [newItem, setNewItem] = useState({ name: '', unitCost: '', quantity: 1 });
 
   // Load saved calculations from Firestore
