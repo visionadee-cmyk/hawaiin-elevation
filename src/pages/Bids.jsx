@@ -2542,4 +2542,3 @@ const Bids = ({ initialFilter }) => {
 };
 
 export default Bids;
-export default Bids;
