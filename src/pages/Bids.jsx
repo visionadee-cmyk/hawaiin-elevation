@@ -477,8 +477,8 @@ const Bids = ({ initialFilter }) => {
 
         // Check if status changed to Submitted and show competitor form
         if (bidData.status === 'Submitted' && editingBid.status !== 'Submitted') {
-          // Update editingBid with current form data for the competitor form
-          setEditingBid({ ...editingBid, ...formData });
+          // Store current form data for competitor form
+          setCompetitorBidData(formData);
           setShowCompetitorForm(true);
           setCompetitorSubmissions([]);
         }
@@ -2398,19 +2398,19 @@ const Bids = ({ initialFilter }) => {
                 <div className="grid grid-cols-2 gap-4 text-sm">
                   <div>
                     <span className="text-gray-600">Title:</span>
-                    <p className="font-medium">{editingBid?.title}</p>
+                    <p className="font-medium">{competitorBidData?.title || editingBid?.title}</p>
                   </div>
                   <div>
                     <span className="text-gray-600">Tender ID:</span>
-                    <p className="font-medium">{editingBid?.tenderId}</p>
+                    <p className="font-medium">{competitorBidData?.tenderId || editingBid?.tenderId}</p>
                   </div>
                   <div>
                     <span className="text-gray-600">Submission Deadline:</span>
-                    <p className="font-medium">{editingBid?.submissionDeadline}</p>
+                    <p className="font-medium">{competitorBidData?.submissionDeadline || editingBid?.submissionDeadline}</p>
                   </div>
                   <div>
                     <span className="text-gray-600">Submission Time:</span>
-                    <p className="font-medium">{editingBid?.submissionTime}</p>
+                    <p className="font-medium">{competitorBidData?.submissionTime || editingBid?.submissionTime}</p>
                   </div>
                 </div>
               </div>
@@ -2492,6 +2492,7 @@ const Bids = ({ initialFilter }) => {
                   onClick={() => {
                     setShowCompetitorForm(false);
                     setCompetitorSubmissions([]);
+                    setCompetitorBidData(null);
                   }}
                   className="btn-secondary"
                 >
@@ -2522,4 +2523,5 @@ const Bids = ({ initialFilter }) => {
   );
 };
 
+export default Bids;
 export default Bids;
