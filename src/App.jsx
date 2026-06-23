@@ -3,12 +3,7 @@ import Layout from './components/Layout';
 import ProtectedRoute from './components/ProtectedRoute';
 import Login from './pages/Login';
 import Dashboard from './pages/Dashboard';
-import Tenders from './pages/Tenders';
 import Bids from './pages/Bids';
-import PurchaseOrders from './pages/PurchaseOrders';
-import Procurement from './pages/Procurement';
-import Suppliers from './pages/Suppliers';
-import Deliveries from './pages/Deliveries';
 import Documents from './pages/Documents';
 import Projects from './pages/Projects';
 import TenderSheets from './pages/TenderSheets';
@@ -16,7 +11,6 @@ import Quotes from './pages/Quotes';
 import Finance from './pages/Finance';
 import Quotations from './pages/Quotations';
 import UsersPage from './pages/Users';
-import Analytics from './pages/Analytics';
 import EnhancedSuppliers from './pages/EnhancedSuppliers';
 import CostCalculator from './pages/CostCalculator';
 import DocumentManager from './pages/DocumentManager';
@@ -26,11 +20,7 @@ import Reports from './pages/Reports';
 import ContractManagement from './pages/ContractManagement';
 import InvoiceTracking from './pages/InvoiceTracking';
 import TaskManagement from './pages/TaskManagement';
-import TeamCollaboration from './pages/TeamCollaboration';
-import MilestoneTracker from './pages/MilestoneTracker';
 import BidComparison from './pages/BidComparison';
-import RiskAssessment from './pages/RiskAssessment';
-import KPIDashboard from './pages/KPIDashboard';
 import NotificationCenter from './pages/NotificationCenter';
 import AuditLog from './pages/AuditLog';
 import AdvancedSearch from './pages/AdvancedSearch';
@@ -65,15 +55,7 @@ function App() {
           </Layout>
         </ProtectedRoute>
       } />
-      
-      <Route path="/tenders" element={
-        <ProtectedRoute>
-          <Layout>
-            <Tenders />
-          </Layout>
-        </ProtectedRoute>
-      } />
-      
+
       <Route path="/bids" element={
         <ProtectedRoute>
           <Layout>
@@ -81,7 +63,7 @@ function App() {
           </Layout>
         </ProtectedRoute>
       } />
-      
+
       <Route path="/bids/won" element={
         <ProtectedRoute>
           <Layout>
@@ -89,7 +71,7 @@ function App() {
           </Layout>
         </ProtectedRoute>
       } />
-      
+
       <Route path="/bids/pending" element={
         <ProtectedRoute>
           <Layout>
@@ -97,43 +79,11 @@ function App() {
           </Layout>
         </ProtectedRoute>
       } />
-      
+
       <Route path="/quotations" element={
         <ProtectedRoute>
           <Layout>
             <Quotations />
-          </Layout>
-        </ProtectedRoute>
-      } />
-      
-      <Route path="/purchase-orders" element={
-        <ProtectedRoute>
-          <Layout>
-            <PurchaseOrders />
-          </Layout>
-        </ProtectedRoute>
-      } />
-      
-      <Route path="/procurement" element={
-        <ProtectedRoute>
-          <Layout>
-            <Procurement />
-          </Layout>
-        </ProtectedRoute>
-      } />
-      
-      <Route path="/suppliers" element={
-        <ProtectedRoute>
-          <Layout>
-            <Suppliers />
-          </Layout>
-        </ProtectedRoute>
-      } />
-      
-      <Route path="/deliveries" element={
-        <ProtectedRoute>
-          <Layout>
-            <Deliveries />
           </Layout>
         </ProtectedRoute>
       } />
@@ -145,7 +95,7 @@ function App() {
           </Layout>
         </ProtectedRoute>
       } />
-      
+
       <Route path="/documents" element={
         <ProtectedRoute>
           <Layout>
@@ -153,7 +103,7 @@ function App() {
           </Layout>
         </ProtectedRoute>
       } />
-      
+
       <Route path="/projects" element={
         <ProtectedRoute>
           <Layout>
@@ -161,7 +111,7 @@ function App() {
           </Layout>
         </ProtectedRoute>
       } />
-      
+
       <Route path="/tender-sheets" element={
         <ProtectedRoute>
           <Layout>
@@ -169,7 +119,7 @@ function App() {
           </Layout>
         </ProtectedRoute>
       } />
-      
+
       <Route path="/quotes" element={
         <ProtectedRoute>
           <Layout>
@@ -177,27 +127,11 @@ function App() {
           </Layout>
         </ProtectedRoute>
       } />
-      
+
       <Route path="/finance" element={
         <ProtectedRoute>
           <Layout>
             <Finance />
-          </Layout>
-        </ProtectedRoute>
-      } />
-      
-      <Route path="/suppliers" element={
-        <ProtectedRoute>
-          <Layout>
-            <EnhancedSuppliers />
-          </Layout>
-        </ProtectedRoute>
-      } />
-      
-      <Route path="/analytics" element={
-        <ProtectedRoute>
-          <Layout>
-            <Analytics />
           </Layout>
         </ProtectedRoute>
       } />
@@ -265,23 +199,7 @@ function App() {
           </Layout>
         </ProtectedRoute>
       } />
-      
-      <Route path="/collaboration" element={
-        <ProtectedRoute>
-          <Layout>
-            <TeamCollaboration />
-          </Layout>
-        </ProtectedRoute>
-      } />
-      
-      <Route path="/milestones" element={
-        <ProtectedRoute>
-          <Layout>
-            <MilestoneTracker />
-          </Layout>
-        </ProtectedRoute>
-      } />
-      
+
       <Route path="/bid-comparison" element={
         <ProtectedRoute>
           <Layout>
@@ -297,23 +215,7 @@ function App() {
           </Layout>
         </ProtectedRoute>
       } />
-      
-      <Route path="/risk-assessment" element={
-        <ProtectedRoute>
-          <Layout>
-            <RiskAssessment />
-          </Layout>
-        </ProtectedRoute>
-      } />
-      
-      <Route path="/kpi" element={
-        <ProtectedRoute>
-          <Layout>
-            <KPIDashboard />
-          </Layout>
-        </ProtectedRoute>
-      } />
-      
+
       <Route path="/notifications" element={
         <ProtectedRoute>
           <Layout>
