@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
-import { collection, query, where, onSnapshot, addDoc, updateDoc, doc, deleteDoc } from 'firebase/firestore';
+import { collection, query, where, onSnapshot, addDoc, updateDoc, doc, deleteDoc, setDoc, getDoc } from 'firebase/firestore';
 import { db } from '../services/firebase';
-import { Building2, DollarSign, Clock, Plus, Trash2, Edit2, ArrowLeft } from 'lucide-react';
+import { Building2, DollarSign, Clock, Plus, Trash2, Edit2, ArrowLeft, ChevronDown, ChevronRight, History, Building } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
 export default function CompetitorSubmissions() {
@@ -10,6 +10,10 @@ export default function CompetitorSubmissions() {
   const [selectedBid, setSelectedBid] = useState(null);
   const [showAddForm, setShowAddForm] = useState(false);
   const [editingSubmission, setEditingSubmission] = useState(null);
+  const [expandedBidId, setExpandedBidId] = useState(null);
+  const [competitorNames, setCompetitorNames] = useState([]);
+  const [activeTab, setActiveTab] = useState('by-bid');
+  const [expandedCompetitor, setExpandedCompetitor] = useState(null);
   const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
@@ -21,13 +25,18 @@ export default function CompetitorSubmissions() {
 
   useEffect(() => {
     const submissionsQuery = query(collection(db, 'competitorSubmissions'));
-    
+
     const unsubscribe = onSnapshot(submissionsQuery, (snapshot) => {
       const fetchedSubmissions = snapshot.docs.map(doc => ({
         id: doc.id,
         ...doc.data()
       }));
       setSubmissions(fetchedSubmissions);
+
+      // Extract unique competitor names
+      const uniqueNames = [...new Set(fetchedSubmissions.map(s => s.competitorName))];
+      setCompetitorNames(uniqueNames);
+
       setLoading(false);
     }, (error) => {
       console.error('Error fetching competitor submissions:', error);
@@ -39,7 +48,7 @@ export default function CompetitorSubmissions() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
+
     try {
       if (editingSubmission) {
         await updateDoc(doc(db, 'competitorSubmissions', editingSubmission.id), {
@@ -60,8 +69,18 @@ export default function CompetitorSubmissions() {
           duration: formData.duration,
           createdAt: new Date().toISOString()
         });
+
+        // Save competitor name to competitors collection if it doesn't exist
+        const competitorRef = doc(db, 'competitors', formData.competitorName);
+        const competitorDoc = await getDoc(competitorRef);
+        if (!competitorDoc.exists()) {
+          await setDoc(competitorRef, {
+            name: formData.competitorName,
+            createdAt: new Date().toISOString()
+          });
+        }
       }
-      
+
       setFormData({ bidId: '', competitorName: '', value: '', duration: '' });
       setShowAddForm(false);
     } catch (error) {
@@ -94,6 +113,22 @@ export default function CompetitorSubmissions() {
     setExpandedBidId(expandedBidId === bidId ? null : bidId);
   };
 
+  const toggleCompetitorExpand = (competitorName) => {
+    setExpandedCompetitor(expandedCompetitor === competitorName ? null : competitorName);
+  };
+
+  // Group submissions by competitor
+  const groupedByCompetitor = submissions.reduce((acc, submission) => {
+    if (!acc[submission.competitorName]) {
+      acc[submission.competitorName] = {
+        name: submission.competitorName,
+        submissions: []
+      };
+    }
+    acc[submission.competitorName].submissions.push(submission);
+    return acc;
+  }, {});
+
   const groupedSubmissions = submissions.reduce((acc, submission) => {
     if (!acc[submission.bidId]) {
       acc[submission.bidId] = {
@@ -113,7 +148,7 @@ export default function CompetitorSubmissions() {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-4">
-          <button 
+          <button
             onClick={() => navigate('/bids')}
             className="p-2 hover:bg-gray-100 rounded-lg"
           >
@@ -124,12 +159,36 @@ export default function CompetitorSubmissions() {
             <p className="text-gray-500 mt-1">Track competitor bid submissions and values</p>
           </div>
         </div>
-        <button 
+        <button
           onClick={() => setShowAddForm(true)}
           className="btn btn-primary flex items-center gap-2"
         >
           <Plus className="w-5 h-5" />
           Add Submission
+        </button>
+      </div>
+
+      {/* Tabs */}
+      <div className="flex gap-2 border-b">
+        <button
+          onClick={() => setActiveTab('by-bid')}
+          className={`px-4 py-2 font-medium transition-colors ${
+            activeTab === 'by-bid'
+              ? 'text-teal-600 border-b-2 border-teal-600'
+              : 'text-gray-600 hover:text-gray-900'
+          }`}
+        >
+          By Bid
+        </button>
+        <button
+          onClick={() => setActiveTab('by-competitor')}
+          className={`px-4 py-2 font-medium transition-colors ${
+            activeTab === 'by-competitor'
+              ? 'text-teal-600 border-b-2 border-teal-600'
+              : 'text-gray-600 hover:text-gray-900'
+          }`}
+        >
+          By Competitor
         </button>
       </div>
 
@@ -147,11 +206,17 @@ export default function CompetitorSubmissions() {
                 <input
                   type="text"
                   required
+                  list="competitor-names"
                   value={formData.competitorName}
                   onChange={(e) => setFormData({ ...formData, competitorName: e.target.value })}
                   className="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500"
                   placeholder="Enter company name"
                 />
+                <datalist id="competitor-names">
+                  {competitorNames.map((name) => (
+                    <option key={name} value={name} />
+                  ))}
+                </datalist>
               </div>
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">
@@ -212,93 +277,185 @@ export default function CompetitorSubmissions() {
           <p className="text-gray-500">No competitor submissions recorded yet</p>
         </div>
       ) : (
-        <div className="space-y-4">
-          {Object.values(groupedSubmissions).map((group) => (
-            <div key={group.bidId} className="card overflow-hidden">
-              {/* Bid Header - Always Visible */}
-              <div
-                onClick={() => toggleExpand(group.bidId)}
-                className="p-4 cursor-pointer hover:bg-gray-50 transition-colors"
-              >
-                <div className="flex items-center justify-between">
-                  <div className="flex-1">
-                    <h3 className="text-lg font-semibold text-gray-900">{group.title}</h3>
-                    <div className="flex flex-wrap gap-4 mt-2 text-sm text-gray-600">
-                      <span className="flex items-center gap-1">
-                        <Building2 className="w-4 h-4" />
-                        Tender ID: {group.tenderId}
-                      </span>
-                      <span className="flex items-center gap-1">
-                        <Clock className="w-4 h-4" />
-                        Deadline: {group.submissionDeadline}
-                      </span>
-                      {group.submissionTime && (
-                        <span className="flex items-center gap-1">
-                          <Clock className="w-4 h-4" />
-                          Time: {group.submissionTime}
+        <>
+          {activeTab === 'by-bid' ? (
+            <div className="space-y-4">
+              {Object.values(groupedSubmissions).map((group) => (
+                <div key={group.bidId} className="card overflow-hidden">
+                  {/* Bid Header - Always Visible */}
+                  <div
+                    onClick={() => toggleExpand(group.bidId)}
+                    className="p-4 cursor-pointer hover:bg-gray-50 transition-colors"
+                  >
+                    <div className="flex items-center justify-between">
+                      <div className="flex-1">
+                        <h3 className="text-lg font-semibold text-gray-900">{group.title}</h3>
+                        <div className="flex flex-wrap gap-4 mt-2 text-sm text-gray-600">
+                          <span className="flex items-center gap-1">
+                            <Building2 className="w-4 h-4" />
+                            Tender ID: {group.tenderId}
+                          </span>
+                          <span className="flex items-center gap-1">
+                            <Clock className="w-4 h-4" />
+                            Deadline: {group.submissionDeadline}
+                          </span>
+                          {group.submissionTime && (
+                            <span className="flex items-center gap-1">
+                              <Clock className="w-4 h-4" />
+                              Time: {group.submissionTime}
+                            </span>
+                          )}
+                        </div>
+                      </div>
+                      <div className="flex items-center gap-3">
+                        <span className="text-sm text-gray-500 bg-gray-100 px-3 py-1 rounded-full">
+                          {group.competitors.length} {group.competitors.length === 1 ? 'competitor' : 'competitors'}
                         </span>
+                        {expandedBidId === group.bidId ? (
+                          <ChevronDown className="w-5 h-5 text-gray-400" />
+                        ) : (
+                          <ChevronRight className="w-5 h-5 text-gray-400" />
+                        )}
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Competitors List - Expandable */}
+                  {expandedBidId === group.bidId && (
+                    <div className="border-t bg-gray-50 p-4">
+                      <div className="space-y-3">
+                        {group.competitors.map((submission) => (
+                          <div
+                            key={submission.id}
+                            className="flex items-center justify-between p-4 bg-white rounded-lg border"
+                          >
+                            <div className="flex-1">
+                              <p className="font-medium text-gray-900">{submission.competitorName}</p>
+                              <div className="flex gap-4 mt-1 text-sm text-gray-600">
+                                <span className="flex items-center gap-1">
+                                  <DollarSign className="w-4 h-4 text-green-600" />
+                                  MVR {submission.value?.toLocaleString()}
+                                </span>
+                                <span className="flex items-center gap-1">
+                                  <Clock className="w-4 h-4 text-blue-600" />
+                                  {submission.duration}
+                                </span>
+                              </div>
+                            </div>
+                            <div className="flex gap-2">
+                              <button
+                                onClick={() => handleEdit(submission)}
+                                className="p-2 hover:bg-gray-100 rounded-lg"
+                                title="Edit"
+                              >
+                                <Edit2 className="w-4 h-4 text-gray-600" />
+                              </button>
+                              <button
+                                onClick={() => handleDelete(submission.id)}
+                                className="p-2 hover:bg-red-50 rounded-lg"
+                                title="Delete"
+                              >
+                                <Trash2 className="w-4 h-4 text-red-500" />
+                              </button>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                </div>
+              ))}
+            </div>
+          ) : (
+            <div className="space-y-4">
+              {Object.values(groupedByCompetitor).map((competitor) => (
+                <div key={competitor.name} className="card overflow-hidden">
+                  {/* Competitor Header - Always Visible */}
+                  <div
+                    onClick={() => toggleCompetitorExpand(competitor.name)}
+                    className="p-4 cursor-pointer hover:bg-gray-50 transition-colors"
+                  >
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-3">
+                        <div className="p-2 bg-teal-100 rounded-lg">
+                          <Building className="w-5 h-5 text-teal-600" />
+                        </div>
+                        <div>
+                          <h3 className="text-lg font-semibold text-gray-900">{competitor.name}</h3>
+                          <div className="flex items-center gap-2 mt-1 text-sm text-gray-600">
+                            <History className="w-4 h-4" />
+                            <span>{competitor.submissions.length} {competitor.submissions.length === 1 ? 'bid' : 'bids'}</span>
+                          </div>
+                        </div>
+                      </div>
+                      {expandedCompetitor === competitor.name ? (
+                        <ChevronDown className="w-5 h-5 text-gray-400" />
+                      ) : (
+                        <ChevronRight className="w-5 h-5 text-gray-400" />
                       )}
                     </div>
                   </div>
-                  <div className="flex items-center gap-3">
-                    <span className="text-sm text-gray-500 bg-gray-100 px-3 py-1 rounded-full">
-                      {group.competitors.length} {group.competitors.length === 1 ? 'competitor' : 'competitors'}
-                    </span>
-                    {expandedBidId === group.bidId ? (
-                      <ChevronDown className="w-5 h-5 text-gray-400" />
-                    ) : (
-                      <ChevronRight className="w-5 h-5 text-gray-400" />
-                    )}
-                  </div>
-                </div>
-              </div>
 
-              {/* Competitors List - Expandable */}
-              {expandedBidId === group.bidId && (
-                <div className="border-t bg-gray-50 p-4">
-                  <div className="space-y-3">
-                    {group.competitors.map((submission) => (
-                      <div
-                        key={submission.id}
-                        className="flex items-center justify-between p-4 bg-white rounded-lg border"
-                      >
-                        <div className="flex-1">
-                          <p className="font-medium text-gray-900">{submission.competitorName}</p>
-                          <div className="flex gap-4 mt-1 text-sm text-gray-600">
-                            <span className="flex items-center gap-1">
-                              <DollarSign className="w-4 h-4 text-green-600" />
-                              MVR {submission.value?.toLocaleString()}
-                            </span>
-                            <span className="flex items-center gap-1">
-                              <Clock className="w-4 h-4 text-blue-600" />
-                              {submission.duration}
-                            </span>
+                  {/* Bid History - Expandable */}
+                  {expandedCompetitor === competitor.name && (
+                    <div className="border-t bg-gray-50 p-4">
+                      <div className="space-y-3">
+                        {competitor.submissions.map((submission) => (
+                          <div
+                            key={submission.id}
+                            className="p-4 bg-white rounded-lg border"
+                          >
+                            <div className="flex items-start justify-between">
+                              <div className="flex-1">
+                                <h4 className="font-medium text-gray-900">{submission.title}</h4>
+                                <div className="flex flex-wrap gap-4 mt-2 text-sm text-gray-600">
+                                  <span className="flex items-center gap-1">
+                                    <Building2 className="w-4 h-4" />
+                                    {submission.tenderId}
+                                  </span>
+                                  <span className="flex items-center gap-1">
+                                    <Clock className="w-4 h-4" />
+                                    {submission.submissionDeadline}
+                                  </span>
+                                </div>
+                                <div className="flex gap-4 mt-2 text-sm">
+                                  <span className="flex items-center gap-1 text-green-600 font-medium">
+                                    <DollarSign className="w-4 h-4" />
+                                    MVR {submission.value?.toLocaleString()}
+                                  </span>
+                                  <span className="flex items-center gap-1 text-blue-600">
+                                    <Clock className="w-4 h-4" />
+                                    {submission.duration}
+                                  </span>
+                                </div>
+                              </div>
+                              <div className="flex gap-2 ml-4">
+                                <button
+                                  onClick={() => handleEdit(submission)}
+                                  className="p-2 hover:bg-gray-100 rounded-lg"
+                                  title="Edit"
+                                >
+                                  <Edit2 className="w-4 h-4 text-gray-600" />
+                                </button>
+                                <button
+                                  onClick={() => handleDelete(submission.id)}
+                                  className="p-2 hover:bg-red-50 rounded-lg"
+                                  title="Delete"
+                                >
+                                  <Trash2 className="w-4 h-4 text-red-500" />
+                                </button>
+                              </div>
+                            </div>
                           </div>
-                        </div>
-                        <div className="flex gap-2">
-                          <button
-                            onClick={() => handleEdit(submission)}
-                            className="p-2 hover:bg-gray-100 rounded-lg"
-                            title="Edit"
-                          >
-                            <Edit2 className="w-4 h-4 text-gray-600" />
-                          </button>
-                          <button
-                            onClick={() => handleDelete(submission.id)}
-                            className="p-2 hover:bg-red-50 rounded-lg"
-                            title="Delete"
-                          >
-                            <Trash2 className="w-4 h-4 text-red-500" />
-                          </button>
-                        </div>
+                        ))}
                       </div>
-                    ))}
-                  </div>
+                    </div>
+                  )}
                 </div>
-              )}
+              ))}
             </div>
-          ))}
-        </div>
+          )}
+        </>
       )}
     </div>
   );
