@@ -34,6 +34,7 @@ import {
 } from 'firebase/firestore';
 import { db } from '../services/firebase';
 import { format } from 'date-fns';
+import { boardMembers } from '../data/boardMembers';
 
 const StaffExpense = () => {
   const [activeTab, setActiveTab] = useState('expenses'); // 'expenses' or 'capital'
@@ -81,12 +82,11 @@ const StaffExpense = () => {
     notes: ''
   });
 
-  // Predefined company staff/directors
-  const companyStaff = [
-    { name: 'Abobakuru Qasim', position: 'Managing Director' },
-    { name: 'Abdul Rasheed Ali', position: 'Director' },
-    { name: 'Ziyad Rashadh', position: 'Director' }
-  ];
+  // Predefined company staff/directors from board members
+  const companyStaff = boardMembers.map(member => ({
+    name: member.name,
+    position: member.role
+  }));
 
   // Predefined expense types + user-defined
   const predefinedTypes = [
@@ -816,13 +816,18 @@ const StaffExpense = () => {
                 {/* Staff Name */}
                 <div>
                   <label className="label">Staff Name (Optional)</label>
-                  <input
-                    type="text"
+                  <select
                     value={formData.staffName}
                     onChange={(e) => setFormData(prev => ({ ...prev, staffName: e.target.value }))}
-                    placeholder="e.g., Ahmed Mohamed"
                     className="input"
-                  />
+                  >
+                    <option value="">Select staff member...</option>
+                    {companyStaff.map((staff) => (
+                      <option key={staff.name} value={staff.name}>
+                        {staff.name} - {staff.position}
+                      </option>
+                    ))}
+                  </select>
                 </div>
 
                 {/* Notes */}
