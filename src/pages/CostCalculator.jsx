@@ -5,9 +5,11 @@ export default function CostCalculator() {
   const [items, setItems] = useState([]);
   const [profitPercentage, setProfitPercentage] = useState(15);
   const [otherCosts, setOtherCosts] = useState([
-    { id: 1, name: 'Transport', amount: 0 },
-    { id: 2, name: 'Food', amount: 0 },
-    { id: 3, name: 'Other', amount: 0 }
+    { id: 1, name: 'Transport', amount: 0, unitType: 'total', days: 1, people: 1 },
+    { id: 2, name: 'Food', amount: 0, unitType: 'total', days: 1, people: 1 },
+    { id: 3, name: 'Accommodation', amount: 0, unitType: 'total', days: 1, people: 1 },
+    { id: 4, name: 'Materials', amount: 0, unitType: 'total', days: 1, people: 1 },
+    { id: 5, name: 'Other', amount: 0, unitType: 'total', days: 1, people: 1 }
   ]);
   const [savedCalculations, setSavedCalculations] = useState([]);
   const [newItem, setNewItem] = useState({ name: '', unitCost: '', quantity: 1 });
@@ -43,15 +45,28 @@ export default function CostCalculator() {
     setItems(updated);
   };
 
-  const updateOtherCost = (id, amount) => {
+  const updateOtherCost = (id, field, value) => {
     setOtherCosts(otherCosts.map(cost => 
-      cost.id === id ? { ...cost, amount: parseFloat(amount) || 0 } : cost
+      cost.id === id ? { ...cost, [field]: field === 'amount' ? parseFloat(value) || 0 : value } : cost
     ));
+  };
+
+  const calculateCostAmount = (cost) => {
+    if (cost.unitType === 'total') {
+      return cost.amount;
+    } else if (cost.unitType === 'per_day') {
+      return cost.amount * cost.days;
+    } else if (cost.unitType === 'per_person') {
+      return cost.amount * cost.people;
+    } else if (cost.unitType === 'per_day_per_person') {
+      return cost.amount * cost.days * cost.people;
+    }
+    return cost.amount;
   };
 
   const calculations = useMemo(() => {
     const totalItemsCost = items.reduce((sum, item) => sum + item.totalCost, 0);
-    const totalOtherCosts = otherCosts.reduce((sum, cost) => sum + cost.amount, 0);
+    const totalOtherCosts = otherCosts.reduce((sum, cost) => sum + calculateCostAmount(cost), 0);
     const subtotal = totalItemsCost + totalOtherCosts;
     const profitAmount = subtotal * (profitPercentage / 100);
     const suggestedBidRate = subtotal + profitAmount;
@@ -230,18 +245,76 @@ export default function CostCalculator() {
               Additional Costs
             </h3>
             
-            <div className="space-y-3">
+            <div className="space-y-4">
               {otherCosts.map((cost) => (
-                <div key={cost.id} className="flex items-center gap-3">
-                  <div className="flex-1">
-                    <label className="block text-sm text-gray-600 mb-1">{cost.name}</label>
-                    <input
-                      type="number"
-                      value={cost.amount}
-                      onChange={(e) => updateOtherCost(cost.id, e.target.value)}
-                      placeholder="0"
-                      className="input w-full"
-                    />
+                <div key={cost.id} className="border rounded-lg p-4 bg-gray-50">
+                  <div className="flex items-center justify-between mb-3">
+                    <h4 className="font-medium text-gray-900">{cost.name}</h4>
+                    <span className="text-sm font-semibold text-blue-700">
+                      MVR {calculateCostAmount(cost).toLocaleString()}
+                    </span>
+                  </div>
+                  
+                  <div className="grid grid-cols-1 md:grid-cols-4 gap-3">
+                    <div>
+                      <label className="block text-xs text-gray-600 mb-1">Unit Type</label>
+                      <select
+                        value={cost.unitType}
+                        onChange={(e) => updateOtherCost(cost.id, 'unitType', e.target.value)}
+                        className="input w-full text-sm"
+                      >
+                        <option value="total">Total Amount</option>
+                        <option value="per_day">Per Day</option>
+                        <option value="per_person">Per Person</option>
+                        <option value="per_day_per_person">Per Day/Person</option>
+                      </select>
+                    </div>
+                    
+                    <div>
+                      <label className="block text-xs text-gray-600 mb-1">Rate (MVR)</label>
+                      <input
+                        type="number"
+                        value={cost.amount}
+                        onChange={(e) => updateOtherCost(cost.id, 'amount', e.target.value)}
+                        placeholder="0"
+                        className="input w-full text-sm"
+                      />
+                    </div>
+                    
+                    {(cost.unitType === 'per_day' || cost.unitType === 'per_day_per_person') && (
+                      <div>
+                        <label className="block text-xs text-gray-600 mb-1">Days</label>
+                        <input
+                          type="number"
+                          value={cost.days}
+                          onChange={(e) => updateOtherCost(cost.id, 'days', e.target.value)}
+                          placeholder="1"
+                          className="input w-full text-sm"
+                          min="1"
+                        />
+                      </div>
+                    )}
+                    
+                    {(cost.unitType === 'per_person' || cost.unitType === 'per_day_per_person') && (
+                      <div>
+                        <label className="block text-xs text-gray-600 mb-1">People</label>
+                        <input
+                          type="number"
+                          value={cost.people}
+                          onChange={(e) => updateOtherCost(cost.id, 'people', e.target.value)}
+                          placeholder="1"
+                          className="input w-full text-sm"
+                          min="1"
+                        />
+                      </div>
+                    )}
+                  </div>
+                  
+                  <div className="mt-2 text-xs text-gray-500">
+                    {cost.unitType === 'per_day' && `= ${cost.amount} MVR × ${cost.days} days`}
+                    {cost.unitType === 'per_person' && `= ${cost.amount} MVR × ${cost.people} people`}
+                    {cost.unitType === 'per_day_per_person' && `= ${cost.amount} MVR × ${cost.days} days × ${cost.people} people`}
+                    {cost.unitType === 'total' && `= ${cost.amount} MVR (total)`}
                   </div>
                 </div>
               ))}
