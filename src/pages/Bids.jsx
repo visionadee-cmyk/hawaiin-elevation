@@ -478,9 +478,14 @@ const Bids = ({ initialFilter }) => {
         // Check if status changed to Submitted and show competitor form
         if (bidData.status === 'Submitted' && editingBid.status !== 'Submitted') {
           // Store current form data for competitor form
-          setCompetitorBidData(formData);
+          setCompetitorBidData({
+            ...formData,
+            id: editingBid.id
+          });
           setShowCompetitorForm(true);
           setCompetitorSubmissions([]);
+          // Don't clear editingBid yet, keep it for the competitor form
+          return;
         }
       } else {
         bidData.createdAt = serverTimestamp();
@@ -502,6 +507,11 @@ const Bids = ({ initialFilter }) => {
       setEditingBid(null);
       resetForm();
       fetchData();
+
+      // Clear competitor bid data if form is closed without showing competitor form
+      if (!showCompetitorForm) {
+        setCompetitorBidData(null);
+      }
     } catch (error) {
       console.error('Error saving bid:', error);
       alert('Error saving bid. Please try again.');
@@ -2493,6 +2503,9 @@ const Bids = ({ initialFilter }) => {
                     setShowCompetitorForm(false);
                     setCompetitorSubmissions([]);
                     setCompetitorBidData(null);
+                    setEditingBid(null);
+                    resetForm();
+                    fetchData();
                   }}
                   className="btn-secondary"
                 >
