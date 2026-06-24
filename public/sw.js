@@ -1,4 +1,4 @@
-const CACHE_NAME = 'hawaiin-elevation-v1';
+const CACHE_NAME = 'hawaiin-elevation-v2';
 const ASSETS_TO_CACHE = [
   '/',
   '/index.html',
@@ -29,7 +29,6 @@ self.addEventListener('fetch', (event) => {
   event.respondWith(
     caches.match(event.request).then((cached) => cached || fetch(event.request).then((res) => {
       return caches.open(CACHE_NAME).then((cache) => {
-        // Clone response and store it
         try { cache.put(event.request, res.clone()); } catch (e) { /* ignore */ }
         return res;
       });

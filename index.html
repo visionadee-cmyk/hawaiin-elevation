@@ -13,10 +13,6 @@
     <meta name="apple-mobile-web-app-title" content="Hawaiin Elevation" />
     <meta name="description" content="Complete tender and procurement management system for Hawaiin Elevation Pvt Ltd" />
     <meta name="author" content="RettsWebDev" />
-    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate, max-age=0" />
-    <meta http-equiv="Pragma" content="no-cache" />
-    <meta http-equiv="Expires" content="-1" />
-    <!-- Removed aggressive cache-clear which appended #nocache to URLs -->
     <title>Hawaiin Elevation - Tender & Procurement Management</title>
   </head>
   <body>
@@ -29,8 +25,6 @@
           navigator.serviceWorker.register('/sw.js')
             .then((registration) => {
               console.log('SW registered: ', registration);
-              // Check for updates
-              registration.update();
             })
             .catch((registrationError) => {
               console.log('SW registration failed: ', registrationError);
