@@ -1,9 +1,10 @@
-const CACHE_NAME = 'hawaiin-elevation-v2';
+const CACHE_NAME = 'hawaiin-elevation-v3';
 const ASSETS_TO_CACHE = [
   '/',
   '/index.html',
   '/manifest.json',
-  '/logo/logo.jpeg'
+  '/logo/icon-192.png',
+  '/logo/icon-512.png'
 ];
 
 self.addEventListener('install', (event) => {

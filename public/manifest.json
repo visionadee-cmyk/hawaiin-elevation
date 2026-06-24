@@ -13,16 +13,28 @@
   "categories": ["business", "productivity", "finance"],
   "icons": [
     {
-      "src": "/logo/logo.jpeg",
+      "src": "/logo/icon-192.png",
       "sizes": "192x192",
-      "type": "image/jpeg",
-      "purpose": "any maskable"
+      "type": "image/png",
+      "purpose": "any"
     },
     {
-      "src": "/logo/logo.jpeg",
+      "src": "/logo/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "/logo/icon-512.png",
       "sizes": "512x512",
-      "type": "image/jpeg",
-      "purpose": "any maskable"
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/logo/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
     }
   ],
   "shortcuts": [
@@ -31,21 +43,21 @@
       "short_name": "Dashboard",
       "description": "View dashboard and statistics",
       "url": "/",
-      "icons": [{ "src": "/logo/logo.jpeg", "sizes": "192x192" }]
+      "icons": [{ "src": "/logo/icon-192.png", "sizes": "192x192" }]
     },
     {
       "name": "Tenders",
       "short_name": "Tenders",
       "description": "View and manage tenders",
       "url": "/tenders",
-      "icons": [{ "src": "/logo/logo.jpeg", "sizes": "192x192" }]
+      "icons": [{ "src": "/logo/icon-192.png", "sizes": "192x192" }]
     },
     {
       "name": "Bids",
       "short_name": "Bids",
       "description": "View and manage bids",
       "url": "/bids",
-      "icons": [{ "src": "/logo/logo.jpeg", "sizes": "192x192" }]
+      "icons": [{ "src": "/logo/icon-192.png", "sizes": "192x192" }]
     }
   ],
   "related_applications": [],
